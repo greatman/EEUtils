@@ -1,6 +1,14 @@
 *.class
-
-# Package Files #
+*.svn
+.svn
+.project
+.classpath
+*.jardesc
 *.jar
-*.war
-*.ear
+/target/
+*.prefs
+*.sw?
+/bin
+/docs
+/.idea/
+*.iml
