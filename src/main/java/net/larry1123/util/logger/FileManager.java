@@ -20,7 +20,7 @@ import java.util.logging.Level;
 
 public class FileManager {
 
-    private static final LoggerSettings config = null; // TODO
+    private static final LoggerSettings config = new LoggerSettings();
 
     private static final HashMap<String, FileHandler> fileHandlers = new HashMap<String, FileHandler>();
     private static final HashMap<FileHandler, UtilFilter> fileFilters = new HashMap<FileHandler, UtilFilter>();
