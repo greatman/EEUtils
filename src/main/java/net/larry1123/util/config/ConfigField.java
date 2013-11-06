@@ -12,26 +12,26 @@ import java.lang.annotation.Target;
 
 @Retention ( RetentionPolicy.RUNTIME )
 @Target ( ElementType.FIELD )
-public @interface ConfigFeild {
+public @interface ConfigField {
 
     /**
-     * TODO
+     * Name of the field to be put into the Prop file
      *
-     * @return
+     * @return The name for the field
      */
     String name() default "";
 
     /**
-     * TODO
+     * Extra Info to be given to the field ie. usage
      *
-     * @return
+     * @return A String array if comments if any
      */
     String[] comments() default "";
 
     /**
-     * TODO
+     * What to delimit an array type if needed
      *
-     * @return
+     * @return The delimiter if needed
      */
     String spacer() default "";
 
