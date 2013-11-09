@@ -1,5 +1,6 @@
 package net.larry1123.util.logger;
 
+import net.larry1123.util.EEUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -15,7 +16,7 @@ import java.util.logging.Level;
 
 public class FileManager {
 
-    private static final LoggerSettings config = null; // TODO
+    private static final LoggerSettings config = EEUtils.getLoggerSettings();
 
     private static final HashMap<String, FileHandler> fileHandlers = new HashMap<String, FileHandler>();
     private static final HashMap<FileHandler, UtilFilter> fileFilters = new HashMap<FileHandler, UtilFilter>();
