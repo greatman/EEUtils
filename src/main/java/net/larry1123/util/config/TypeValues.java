@@ -61,7 +61,7 @@ public enum TypeValues {
         return thisType;
     }
 
-    @SuppressWarnings ( "unused" )
+    @SuppressWarnings("unused")
     private static Type getFieldType(String name) {
         try {
             Field field = TypeValues.class.getField(name);

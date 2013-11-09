@@ -1,9 +1,3 @@
-/**
- * @author ElecEntertainment
- * @team Larry1123, Joshtmathews, Sinzo, Xalbec
- * @lastedit Aug 13, 2013 8:28:49 AM
- */
-
 package net.larry1123.util.logger;
 
 import java.util.LinkedList;

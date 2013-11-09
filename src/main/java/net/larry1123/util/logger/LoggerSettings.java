@@ -1,27 +1,12 @@
-/**
- * @author ElecEntertainment
- * @team Larry1123, Joshtmathews, Sinzo, Xalbec
- * @lastedit Aug 13, 2013 8:28:43 AM
- */
 package net.larry1123.util.logger;
 
-public class LoggerSettings {
-
-    private String logger_Path = "logs/";
-    private final FileSplits logsplit = FileSplits.NONE;
-    private String logFileType = "log";
-    private String currentsplit = "";
-    private boolean pasteSend = true;
-    private String pasteUserName = "";
-
+public interface LoggerSettings {
     /**
      * Gets the current Log Path
      *
      * @return Current Log Path
      */
-    public String getLoggerPath() {
-        return this.logger_Path;
-    }
+    public String getLoggerPath();
 
     /**
      * Sets the Path for loggers
@@ -29,54 +14,42 @@ public class LoggerSettings {
      *
      * @param path Local Path to place Log files
      */
-    public void setLoggerPath(String path) {
-        this.logger_Path = path;
-    }
+    public void setLoggerPath(String path);
 
     /**
      * Returns is the Server is allowed to send info to https://paste.larry1123.net/
      *
      * @return true is allowed false not allowed
      */
-    public boolean isPasteingAllowed() {
-        return this.pasteSend;
-    }
+    public boolean isPastingAllowed();
 
     /**
      * TODO
      *
      * @param state
      */
-    public void setPasteingAllowed(boolean state) {
-        this.pasteSend = state;
-    }
+    public void setPastingAllowed(boolean state);
 
     /**
      * Returns the User Name to post paste as.
      *
      * @return Returns the User Name to post paste as.
      */
-    public String getUserName() {
-        return this.pasteUserName;
-    }
+    public String getUserName();
 
     /**
      * TODO
      *
      * @param name
      */
-    public void setUserName(String name) {
-        this.pasteUserName = name;
-    }
+    public void setUserName(String name);
 
     /**
      * Get the Settings for how to Split Log Files
      *
      * @return Current setting
      */
-    public FileSplits getSplit() {
-        return this.logsplit;
-    }
+    public FileSplits getSplit();
 
     /**
      * Gets the Currently set time stamp for Log files if Splitting is enabled
@@ -84,44 +57,34 @@ public class LoggerSettings {
      *
      * @return Currently used timestamp
      */
-    public String getCurrentSplit() {
-        return this.currentsplit;
-    }
+    public String getCurrentSplit();
 
     /**
      * To be used by Logger Only Do not Change
      *
      * @param current
      */
-    public void setCurrentSplit(String current) {
-        this.currentsplit = current;
-    }
+    public void setCurrentSplit(String current);
 
     /**
      * Get what to set the File Type as
      *
      * @return String of the file type to use
      */
-    public String getFileType() {
-        return this.logFileType;
-    }
+    public String getFileType();
 
     /**
      * TODO
      *
      * @param type
      */
-    public void setFileType(String type) {
-        this.logFileType = type;
-    }
+    public void setFileType(String type);
 
     /**
      * TODO
      *
      * @return
      */
-    public String getParentLogger() {
-        return null;
-    }
+    public String getParentLogger();
 
 }

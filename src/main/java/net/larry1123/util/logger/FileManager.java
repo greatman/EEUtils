@@ -1,8 +1,3 @@
-/**
- * @author ElecEntertainment
- * @team Larry1123, Joshtmathews, Sinzo, Xalbec
- * @lastedit Aug 13, 2013 8:28:10 AM
- */
 package net.larry1123.util.logger;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -20,7 +15,7 @@ import java.util.logging.Level;
 
 public class FileManager {
 
-    private static final LoggerSettings config = new LoggerSettings();
+    private static final LoggerSettings config = null; // TODO
 
     private static final HashMap<String, FileHandler> fileHandlers = new HashMap<String, FileHandler>();
     private static final HashMap<FileHandler, UtilFilter> fileFilters = new HashMap<FileHandler, UtilFilter>();

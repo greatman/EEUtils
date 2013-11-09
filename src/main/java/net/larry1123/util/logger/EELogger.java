@@ -1,9 +1,3 @@
-/**
- * @author ElecEntertainment
- * @team Larry1123, Joshtmathews, Sinzo, Xalbec
- * @lastedit Aug 13, 2013 8:28:02 AM
- */
-
 package net.larry1123.util.logger;
 
 import java.io.*;
@@ -18,7 +12,7 @@ import java.util.logging.Logger;
 
 public class EELogger extends Logger {
 
-    private static final LoggerSettings config = new LoggerSettings(); // TODO
+    private static final LoggerSettings config = null; // TODO
 
     /**
      * Logger to log about logging ... yea I know
@@ -30,7 +24,7 @@ public class EELogger extends Logger {
      *
      * @return
      */
-    public static String getLogpath() {
+    public static String getLogPath() {
         return config.getLoggerPath();
     }
 
@@ -40,20 +34,25 @@ public class EELogger extends Logger {
     private final static HashMap<String, EELogger> loggers = new HashMap<String, EELogger>();
 
     static {
-        File logDir = new File(getLogpath());
+        File logDir = new File(getLogPath());
         // Ensure that the Directory is there
         if (!logDir.exists()) {
             logDir.mkdirs();
         }
 
+        // Lets set the Parent Logger if we have one
         if (config.getParentLogger() != null) {
             log.setParent(Logger.getLogger(config.getParentLogger()));
         }
 
+        // Make sure we see every log level
         log.setLevel(Level.ALL);
         ConsoleHandler consolehandler = new ConsoleHandler();
+        // Lets format this
         consolehandler.setFormatter(new UtilsLogFormat());
+        // Making sure that we format everything
         consolehandler.setLevel(Level.ALL);
+        // Got to make sure we add the Handler
         log.addHandler(consolehandler);
     }
 
@@ -85,8 +84,8 @@ public class EELogger extends Logger {
      */
     public static EELogger getSubLogger(String name, EELogger parent) {
         if (!loggers.containsKey(parent.getName() + ":" + name)) {
-            EELogger logman = new EELogger(name, parent);
-            loggers.put(logman.getName(), logman);
+            EELogger logger = new EELogger(name, parent);
+            loggers.put(logger.getName(), logger);
         }
         return loggers.get(parent.getName() + ":" + name);
     }
@@ -99,7 +98,7 @@ public class EELogger extends Logger {
 
     private EELogger(String name) {
         super(name, null);
-        path = getLogpath() + name + "/";
+        path = getLogPath() + name + "/";
         logpath = path + name;
         FileManager.setUpFile(this, logpath);
         if (log != null) {
@@ -265,7 +264,7 @@ public class EELogger extends Logger {
      * @return True if paste was made of stacktrace false if it failed for any reason
      */
     public boolean logStacktraceToPasteBin(String message, Throwable thrown) {
-        return logStacktraceToPasteBin(Level.WARNING, message, thrown);
+        return logStackTraceToPasteBin(Level.WARNING, message, thrown);
     }
 
     /**
@@ -278,8 +277,8 @@ public class EELogger extends Logger {
      * @param thrown  Throwable Error To be logged
      * @return True if paste was made of stacktrace false if it failed for any reason
      */
-    public void logStacktraceToPasteBin(String lvl, String message, Throwable thrown) {
-        logStacktraceToPasteBin(LoggerLevels.getLoggerLevel(lvl), message, thrown);
+    public boolean logStackTraceToPasteBin(String lvl, String message, Throwable thrown) {
+        return logStackTraceToPasteBin(LoggerLevels.getLoggerLevel(lvl), message, thrown);
     }
 
     /**
@@ -292,11 +291,11 @@ public class EELogger extends Logger {
      * @param thrown  Throwable Error To be logged
      * @return True if paste was made of stacktrace false if it failed for any reason
      */
-    public boolean logStacktraceToPasteBin(LoggerLevel lvl, String message, Throwable thrown) {
+    public boolean logStackTraceToPasteBin(LoggerLevel lvl, String message, Throwable thrown) {
         if (!lvl.getPrefix().isEmpty()) {
             message = "[" + lvl.getPrefix() + "] " + message;
         }
-        return logStacktraceToPasteBin((Level) lvl, message, thrown);
+        return logStackTraceToPasteBin((Level) lvl, message, thrown);
     }
 
     /**
@@ -309,10 +308,10 @@ public class EELogger extends Logger {
      * @param thrown  Throwable Error To be logged
      * @return True if paste was made of stacktrace false if it failed for any reason
      */
-    public boolean logStacktraceToPasteBin(Level lvl, String message, Throwable thrown) {
+    public boolean logStackTraceToPasteBin(Level lvl, String message, Throwable thrown) {
         log(lvl, message, thrown);
 
-        if (config.isPasteingAllowed()) {
+        if (config.isPastingAllowed()) {
             try {
                 URL url = new URL("http://paste.larry1123.net/");
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
