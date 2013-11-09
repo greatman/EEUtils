@@ -1,5 +1,7 @@
 package net.larry1123.util.logger;
 
+import net.larry1123.util.EEUtils;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -12,7 +14,7 @@ import java.util.logging.Logger;
 
 public class EELogger extends Logger {
 
-    private static final LoggerSettings config = null; // TODO
+    private static final LoggerSettings config = EEUtils.getLoggerSettings();
 
     /**
      * Logger to log about logging ... yea I know
