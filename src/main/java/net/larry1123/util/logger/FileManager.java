@@ -37,8 +37,8 @@ public class FileManager {
             e.printStackTrace();
         }
 
-        if (!(config.getCurrentSplit().equals(null) || config.getCurrentSplit().equals(""))) {
-            Date currentsplit = null;
+        if (!(config.getCurrentSplit() == null || config.getCurrentSplit().equals(""))) {
+            Date currentsplit;
             try {
                 currentsplit = DateUtils.parseDate(config.getCurrentSplit(), DateFormatUtils.SMTP_DATETIME_FORMAT.getPattern());
             } catch (ParseException e) {
@@ -238,9 +238,6 @@ public class FileManager {
                         handler = setUpFile(logger, logger.logpath);
                         handler.setFilter(filter);
                     }
-                } else {
-                    // TODO
-                    continue;
                 }
             }
         }

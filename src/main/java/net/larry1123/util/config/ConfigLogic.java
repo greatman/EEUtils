@@ -10,13 +10,14 @@ import java.lang.reflect.Type;
 public class ConfigLogic {
 
     /**
-     * Saves data to disk if any change has been made
+     * Saves data to disk
      */
-    public static void save(PropertiesFile propertiesfile, ConfigBase config, Field[] configFields) {
+    public static void save(PropertiesFile propertiesFile, ConfigBase config, Field[] configFields) {
         // Just got to make sure this stuff is not null
-        if (config == null) throw new NullPointerException("PropertiesFile can not be null");
+        if (propertiesFile == null) throw new NullPointerException("PropertiesFile can not be null");
         if (config == null) throw new NullPointerException("ConfigBase can not be null");
-        if (configFields == null) return;
+        // Lets not do anything if we have no Fields to take care of
+        if (ArrayUtils.isEmpty(configFields)) return;
 
         for (Field field : configFields) {
             // Ensure we can use the field
@@ -61,13 +62,13 @@ public class ConfigLogic {
                 // Boolean
                 case BOOLEANWRAP:
                 case BOOLEAN:
-                    propertiesfile.setBoolean(fieldName, (Boolean) value);
+                    propertiesFile.setBoolean(fieldName, (Boolean) value);
                     break;
 
                 // Byte
                 case BYTEWRAP:
                 case BYTE:
-                    propertiesfile.setByte(fieldName, (Byte) value);
+                    propertiesFile.setByte(fieldName, (Byte) value);
                     break;
 
                 case BYTEWRAPARRAY:
@@ -77,22 +78,22 @@ public class ConfigLogic {
                     barray = (byte[]) value;
                     // Uses a custom spacer if given
                     if (hasSpacer) {
-                        propertiesfile.setByteArray(fieldName, ano.spacer(), barray);
+                        propertiesFile.setByteArray(fieldName, ano.spacer(), barray);
                     } else {
-                        propertiesfile.setByteArray(fieldName, barray);
+                        propertiesFile.setByteArray(fieldName, barray);
                     }
                     break;
 
                 // Character
                 case CHARACTERWRAP:
                 case CHARACTER:
-                    propertiesfile.setCharacter(fieldName, (Character) value);
+                    propertiesFile.setCharacter(fieldName, (Character) value);
                     break;
 
                 // Double
                 case DOUBLEWRAP:
                 case DOUBLE:
-                    propertiesfile.setDouble(fieldName, (Double) value);
+                    propertiesFile.setDouble(fieldName, (Double) value);
                     break;
 
                 case DOUBLEWRAPARRAY:
@@ -102,16 +103,16 @@ public class ConfigLogic {
                     darray = (double[]) value;
                     // Uses a custom spacer if given
                     if (hasSpacer) {
-                        propertiesfile.setDoubleArray(fieldName, ano.spacer(), darray);
+                        propertiesFile.setDoubleArray(fieldName, ano.spacer(), darray);
                     } else {
-                        propertiesfile.setDoubleArray(fieldName, darray);
+                        propertiesFile.setDoubleArray(fieldName, darray);
                     }
                     break;
 
                 // Float
                 case FLOATWRAP:
                 case FLOAT:
-                    propertiesfile.setFloat(fieldName, (Float) value);
+                    propertiesFile.setFloat(fieldName, (Float) value);
                     break;
 
                 case FLOATWRAPARRAY:
@@ -121,16 +122,16 @@ public class ConfigLogic {
                     farray = (float[]) value;
                     // Uses a custom spacer if given
                     if (hasSpacer) {
-                        propertiesfile.setFloatArray(fieldName, ano.spacer(), farray);
+                        propertiesFile.setFloatArray(fieldName, ano.spacer(), farray);
                     } else {
-                        propertiesfile.setFloatArray(fieldName, farray);
+                        propertiesFile.setFloatArray(fieldName, farray);
                     }
                     break;
 
                 // Integer
                 case INTEGERWRAP:
                 case INTEGER:
-                    propertiesfile.setInt(fieldName, (Integer) value);
+                    propertiesFile.setInt(fieldName, (Integer) value);
                     break;
 
                 case INTEGERWRAPARRAY:
@@ -140,16 +141,16 @@ public class ConfigLogic {
                     iarray = (int[]) value;
                     // Uses a custom spacer if given
                     if (hasSpacer) {
-                        propertiesfile.setIntArray(fieldName, ano.spacer(), iarray);
+                        propertiesFile.setIntArray(fieldName, ano.spacer(), iarray);
                     } else {
-                        propertiesfile.setIntArray(fieldName, iarray);
+                        propertiesFile.setIntArray(fieldName, iarray);
                     }
                     break;
 
                 // Long
                 case LONGWRAP:
                 case LONG:
-                    propertiesfile.setLong(fieldName, (Long) value);
+                    propertiesFile.setLong(fieldName, (Long) value);
                     break;
 
                 case LONGWRAPARRAY:
@@ -159,16 +160,16 @@ public class ConfigLogic {
                     larray = (long[]) value;
                     // Uses a custom spacer if given
                     if (hasSpacer) {
-                        propertiesfile.setLongArray(fieldName, ano.spacer(), larray);
+                        propertiesFile.setLongArray(fieldName, ano.spacer(), larray);
                     } else {
-                        propertiesfile.setLongArray(fieldName, larray);
+                        propertiesFile.setLongArray(fieldName, larray);
                     }
                     break;
 
                 // Short
                 case SHORTWRAP:
                 case SHORT:
-                    propertiesfile.setShort(fieldName, (Short) value);
+                    propertiesFile.setShort(fieldName, (Short) value);
                     break;
 
                 case SHORTWRAPARRAY:
@@ -178,23 +179,23 @@ public class ConfigLogic {
                     sarray = (short[]) value;
                     // Uses a custom spacer if given
                     if (hasSpacer) {
-                        propertiesfile.setShortArray(fieldName, ano.spacer(), sarray);
+                        propertiesFile.setShortArray(fieldName, ano.spacer(), sarray);
                     } else {
-                        propertiesfile.setShortArray(fieldName, sarray);
+                        propertiesFile.setShortArray(fieldName, sarray);
                     }
                     break;
 
                 // String
                 case STRING:
-                    propertiesfile.setString(fieldName, (String) value);
+                    propertiesFile.setString(fieldName, (String) value);
                     break;
 
                 case STRINGARRAY:
                     // Uses a custom spacer if given
                     if (hasSpacer) {
-                        propertiesfile.setStringArray(fieldName, ano.spacer(), (String[]) value);
+                        propertiesFile.setStringArray(fieldName, ano.spacer(), (String[]) value);
                     } else {
-                        propertiesfile.setStringArray(fieldName, (String[]) value);
+                        propertiesFile.setStringArray(fieldName, (String[]) value);
                     }
                     break;
 
@@ -205,17 +206,18 @@ public class ConfigLogic {
             }
         }
         // Well lets SAVE!!!
-        propertiesfile.save();
+        propertiesFile.save();
     }
 
     /**
      * Loads data from file to ConfigBase, and makes the file's default settings if needed
      */
-    public static void load(PropertiesFile propertiesfile, ConfigBase config, Field[] configFields) {
+    public static void load(PropertiesFile propertiesFile, ConfigBase config, Field[] configFields) {
         // Just got to make sure this stuff is not null
-        if (config == null) throw new NullPointerException("PropertiesFile can not be null");
+        if (propertiesFile == null) throw new NullPointerException("PropertiesFile can not be null");
         if (config == null) throw new NullPointerException("ConfigBase can not be null");
-        if (configFields == null) return;
+        // Lets not do anything if we have no Fields to take care of
+        if (ArrayUtils.isEmpty(configFields)) return;
 
         for (Field field : configFields) {
             // Ensure we can use the field
@@ -244,7 +246,7 @@ public class ConfigLogic {
             // Lets give this thing a name
             String fieldName = (ano.name().equals("")) ? field.getName() : ano.name();
 
-            Object result = null;
+            Object result;
 
             // if we have an array
             byte[] barray;
@@ -262,9 +264,9 @@ public class ConfigLogic {
                 case BOOLEAN:
                     // Gets the current value or sets the default value
                     if (hasValue) {
-                        result = propertiesfile.getBoolean(fieldName, (Boolean) defaultValue);
+                        result = propertiesFile.getBoolean(fieldName, (Boolean) defaultValue);
                     } else {
-                        result = propertiesfile.getBoolean(fieldName);
+                        result = propertiesFile.getBoolean(fieldName);
                     }
                     break;
 
@@ -273,9 +275,9 @@ public class ConfigLogic {
                 case BYTE:
                     // Gets the current value or sets the default value
                     if (hasValue) {
-                        result = propertiesfile.getByte(fieldName, (Byte) defaultValue);
+                        result = propertiesFile.getByte(fieldName, (Byte) defaultValue);
                     } else {
-                        result = propertiesfile.getByte(fieldName);
+                        result = propertiesFile.getByte(fieldName);
                     }
                     break;
 
@@ -288,16 +290,16 @@ public class ConfigLogic {
                     if (hasValue) {
                         // Uses a custom spacer if given
                         if (hasSpacer) {
-                            result = propertiesfile.getByteArray(fieldName, ano.spacer(), barray);
+                            result = propertiesFile.getByteArray(fieldName, ano.spacer(), barray);
                         } else {
-                            result = propertiesfile.getByteArray(fieldName, barray);
+                            result = propertiesFile.getByteArray(fieldName, barray);
                         }
                     } else {
                         // Uses a custom spacer if given
                         if (hasSpacer) {
-                            result = propertiesfile.getByteArray(fieldName, ano.spacer());
+                            result = propertiesFile.getByteArray(fieldName, ano.spacer());
                         } else {
-                            result = propertiesfile.getByteArray(fieldName);
+                            result = propertiesFile.getByteArray(fieldName);
                         }
                     }
                     break;
@@ -307,9 +309,9 @@ public class ConfigLogic {
                 case CHARACTER:
                     // Gets the current value or sets the default value
                     if (hasValue) {
-                        result = propertiesfile.getCharacter(fieldName, (Character) defaultValue);
+                        result = propertiesFile.getCharacter(fieldName, (Character) defaultValue);
                     } else {
-                        result = propertiesfile.getCharacter(fieldName);
+                        result = propertiesFile.getCharacter(fieldName);
                     }
                     break;
 
@@ -318,9 +320,9 @@ public class ConfigLogic {
                 case DOUBLE:
                     // Gets the current value or sets the default value
                     if (hasValue) {
-                        result = propertiesfile.getDouble(fieldName, (Double) defaultValue);
+                        result = propertiesFile.getDouble(fieldName, (Double) defaultValue);
                     } else {
-                        result = propertiesfile.getDouble(fieldName);
+                        result = propertiesFile.getDouble(fieldName);
                     }
                     break;
 
@@ -333,16 +335,16 @@ public class ConfigLogic {
                     if (hasValue) {
                         // Uses a custom spacer if given
                         if (hasSpacer) {
-                            result = propertiesfile.getDoubleArray(fieldName, ano.spacer(), darray);
+                            result = propertiesFile.getDoubleArray(fieldName, ano.spacer(), darray);
                         } else {
-                            result = propertiesfile.getDoubleArray(fieldName, darray);
+                            result = propertiesFile.getDoubleArray(fieldName, darray);
                         }
                     } else {
                         // Uses a custom spacer if given
                         if (hasSpacer) {
-                            result = propertiesfile.getDoubleArray(fieldName, ano.spacer());
+                            result = propertiesFile.getDoubleArray(fieldName, ano.spacer());
                         } else {
-                            result = propertiesfile.getDoubleArray(fieldName);
+                            result = propertiesFile.getDoubleArray(fieldName);
                         }
                     }
                     break;
@@ -352,9 +354,9 @@ public class ConfigLogic {
                 case FLOAT:
                     // Gets the current value or sets the default value
                     if (hasValue) {
-                        result = propertiesfile.getFloat(fieldName, (Float) defaultValue);
+                        result = propertiesFile.getFloat(fieldName, (Float) defaultValue);
                     } else {
-                        result = propertiesfile.getFloat(fieldName);
+                        result = propertiesFile.getFloat(fieldName);
                     }
                     break;
 
@@ -367,16 +369,16 @@ public class ConfigLogic {
                     if (hasValue) {
                         // Uses a custom spacer if given
                         if (hasSpacer) {
-                            result = propertiesfile.getFloatArray(fieldName, ano.spacer(), farray);
+                            result = propertiesFile.getFloatArray(fieldName, ano.spacer(), farray);
                         } else {
-                            result = propertiesfile.getFloatArray(fieldName, farray);
+                            result = propertiesFile.getFloatArray(fieldName, farray);
                         }
                     } else {
                         // Uses a custom spacer if given
                         if (hasSpacer) {
-                            result = propertiesfile.getFloatArray(fieldName, ano.spacer());
+                            result = propertiesFile.getFloatArray(fieldName, ano.spacer());
                         } else {
-                            result = propertiesfile.getFloatArray(fieldName);
+                            result = propertiesFile.getFloatArray(fieldName);
                         }
                     }
                     break;
@@ -386,9 +388,9 @@ public class ConfigLogic {
                 case INTEGER:
                     // Gets the current value or sets the default value
                     if (hasValue) {
-                        result = propertiesfile.getInt(fieldName, (Integer) defaultValue);
+                        result = propertiesFile.getInt(fieldName, (Integer) defaultValue);
                     } else {
-                        result = propertiesfile.getInt(fieldName);
+                        result = propertiesFile.getInt(fieldName);
                     }
                     break;
 
@@ -401,16 +403,16 @@ public class ConfigLogic {
                     if (hasValue) {
                         // Uses a custom spacer if given
                         if (hasSpacer) {
-                            result = propertiesfile.getIntArray(fieldName, ano.spacer(), iarray);
+                            result = propertiesFile.getIntArray(fieldName, ano.spacer(), iarray);
                         } else {
-                            result = propertiesfile.getIntArray(fieldName, iarray);
+                            result = propertiesFile.getIntArray(fieldName, iarray);
                         }
                     } else {
                         // Uses a custom spacer if given
                         if (hasSpacer) {
-                            result = propertiesfile.getIntArray(fieldName, ano.spacer());
+                            result = propertiesFile.getIntArray(fieldName, ano.spacer());
                         } else {
-                            result = propertiesfile.getIntArray(fieldName);
+                            result = propertiesFile.getIntArray(fieldName);
                         }
                     }
                     break;
@@ -420,9 +422,9 @@ public class ConfigLogic {
                 case LONG:
                     // Gets the current value or sets the default value
                     if (hasValue) {
-                        result = propertiesfile.getLong(fieldName, (Long) defaultValue);
+                        result = propertiesFile.getLong(fieldName, (Long) defaultValue);
                     } else {
-                        result = propertiesfile.getLong(fieldName);
+                        result = propertiesFile.getLong(fieldName);
                     }
                     break;
 
@@ -435,16 +437,16 @@ public class ConfigLogic {
                     if (hasValue) {
                         // Uses a custom spacer if given
                         if (hasSpacer) {
-                            result = propertiesfile.getLongArray(fieldName, ano.spacer(), larray);
+                            result = propertiesFile.getLongArray(fieldName, ano.spacer(), larray);
                         } else {
-                            result = propertiesfile.getLongArray(fieldName, larray);
+                            result = propertiesFile.getLongArray(fieldName, larray);
                         }
                     } else {
                         // Uses a custom spacer if given
                         if (hasSpacer) {
-                            result = propertiesfile.getLongArray(fieldName, ano.spacer());
+                            result = propertiesFile.getLongArray(fieldName, ano.spacer());
                         } else {
-                            result = propertiesfile.getLongArray(fieldName);
+                            result = propertiesFile.getLongArray(fieldName);
                         }
                     }
                     break;
@@ -454,9 +456,9 @@ public class ConfigLogic {
                 case SHORT:
                     // Gets the current value or sets the default value
                     if (hasValue) {
-                        result = propertiesfile.getShort(fieldName, (Short) defaultValue);
+                        result = propertiesFile.getShort(fieldName, (Short) defaultValue);
                     } else {
-                        result = propertiesfile.getShort(fieldName);
+                        result = propertiesFile.getShort(fieldName);
                     }
                     break;
 
@@ -469,16 +471,16 @@ public class ConfigLogic {
                     if (hasValue) {
                         // Uses a custom spacer if given
                         if (hasSpacer) {
-                            result = propertiesfile.getShortArray(fieldName, ano.spacer(), sarray);
+                            result = propertiesFile.getShortArray(fieldName, ano.spacer(), sarray);
                         } else {
-                            result = propertiesfile.getShortArray(fieldName, sarray);
+                            result = propertiesFile.getShortArray(fieldName, sarray);
                         }
                     } else {
                         // Uses a custom spacer if given
                         if (hasSpacer) {
-                            result = propertiesfile.getShortArray(fieldName, ano.spacer());
+                            result = propertiesFile.getShortArray(fieldName, ano.spacer());
                         } else {
-                            result = propertiesfile.getShortArray(fieldName);
+                            result = propertiesFile.getShortArray(fieldName);
                         }
                     }
                     break;
@@ -487,9 +489,9 @@ public class ConfigLogic {
                 case STRING:
                     // Gets the current value or sets the default value
                     if (hasValue) {
-                        result = propertiesfile.getString(fieldName, (String) defaultValue);
+                        result = propertiesFile.getString(fieldName, (String) defaultValue);
                     } else {
-                        result = propertiesfile.getString(fieldName);
+                        result = propertiesFile.getString(fieldName);
                     }
                     break;
 
@@ -498,16 +500,16 @@ public class ConfigLogic {
                     if (hasValue) {
                         // Uses a custom spacer if given
                         if (hasSpacer) {
-                            result = propertiesfile.getStringArray(fieldName, ano.spacer(), (String[]) defaultValue);
+                            result = propertiesFile.getStringArray(fieldName, ano.spacer(), (String[]) defaultValue);
                         } else {
-                            result = propertiesfile.getStringArray(fieldName, (String[]) defaultValue);
+                            result = propertiesFile.getStringArray(fieldName, (String[]) defaultValue);
                         }
                     } else {
                         // Uses a custom spacer if given
                         if (hasSpacer) {
-                            result = propertiesfile.getStringArray(fieldName, ano.spacer());
+                            result = propertiesFile.getStringArray(fieldName, ano.spacer());
                         } else {
-                            result = propertiesfile.getStringArray(fieldName);
+                            result = propertiesFile.getStringArray(fieldName);
                         }
                     }
                     break;
@@ -523,7 +525,7 @@ public class ConfigLogic {
             if (result != null) {
                 // Adds any amount of comments to the key in the file
                 if ((ano.comments().length != 1 || !ano.comments()[0].equals(""))) {
-                    propertiesfile.setComments(fieldName, ano.comments());
+                    propertiesFile.setComments(fieldName, ano.comments());
                 }
                 try {
                     // Now lets set that field to a value if we have one
@@ -536,7 +538,7 @@ public class ConfigLogic {
             }
         }
         // Well lets SAVE!!!
-        propertiesfile.save();
+        propertiesFile.save();
     }
 
 }

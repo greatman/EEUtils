@@ -5,23 +5,6 @@ import java.util.HashMap;
 public class LoggerLevels {
 
     private final static HashMap<String, LoggerLevel> LoggerLevels = new HashMap<String, LoggerLevel>();
-    private final static String BaseString = "ElecEntertainmentLogger-";
-
-    static {
-        addInternalLoggerLevel("LoggerLevelFunctions-FailedToCreateLoggerLevel");
-        addInternalLoggerLevel("LoggerLevelFunctions-FailedToFindLoggerLevel");
-    }
-
-    /**
-     * This will add a Logger Level and return the name of the Level with in LoggerLevels
-     * To be used by the Logging System only
-     *
-     * @param levelName Name to give the level
-     * @return String name of the Logger
-     */
-    public static String addInternalLoggerLevel(String levelName) {
-        return addLoggerLevel(BaseString + levelName);
-    }
 
     /**
      * This will add a Logger Level and return the name of the Level with in LoggerLevels
