@@ -315,27 +315,19 @@ public class EELogger extends Logger {
 
         if (config.isPastingAllowed()) {
             try {
-                URL url = new URL("http://paste.larry1123.net/");
+                URL url = new URL("http://paste.larry1123.net/api/xml/create");
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
                 con.setRequestMethod("POST");
                 con.setRequestProperty("User-Agent", "Mozilla/5.0");
                 con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
-                String urlParameters = "paste_data=" + "[" + lvl.getName() + "] " + message + "\n" + org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(thrown);
+                String urlParameters = "data=" + "[" + lvl.getName() + "] " + message + "\n" + org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(thrown);
                 urlParameters += "&";
-                urlParameters += "paste_lang=Java";
+                urlParameters += "title=" + "[" + lvl.getName() + "] " + message;
                 urlParameters += "&";
-                urlParameters += "api_submit=true";
+                urlParameters += "language=Java";
                 urlParameters += "&";
-                urlParameters += "mode=xml";
-                urlParameters += "&";
-                urlParameters += "paste_expire=0";
-                urlParameters += "&";
-                urlParameters += "paste_project=" + this.getName();
-                if (!config.getUserName().equals("")) {
-                    urlParameters += "&";
-                    urlParameters += "paste_user=" + config.getUserName();
-                }
+                urlParameters += "project=" + this.getName();
 
                 // Send post request
                 con.setDoOutput(true);

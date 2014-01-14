@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.larry1123</groupId>
-    <version>1.2.4-SNAPSHOT</version>
+    <version>1.2.5</version>
     <build>
         <defaultGoal>clean install</defaultGoal>
         <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
@@ -40,12 +40,11 @@
                             <Specification-Title>EEUtils</Specification-Title>
                             <Specification-Vendor>Larry1123</Specification-Vendor>
                             <Specification-Vendor-Id>net.larry1123</Specification-Vendor-Id>
-                            <Main-Class>net.menu.Main</Main-Class>
                             <Sealed>true</Sealed>
                         </manifestEntries>
                         <manifestSections>
                             <manifestSection>
-                                <name>net/canarymod/</name>
+                                <name>net/larry1123/</name>
                                 <manifestEntries>
                                     <Sealed>true</Sealed>
                                 </manifestEntries>

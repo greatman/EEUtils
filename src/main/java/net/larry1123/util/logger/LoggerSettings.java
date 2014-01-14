@@ -1,6 +1,7 @@
 package net.larry1123.util.logger;
 
 public interface LoggerSettings {
+
     /**
      * Gets the current Log Path
      *
@@ -17,7 +18,7 @@ public interface LoggerSettings {
     public void setLoggerPath(String path);
 
     /**
-     * Returns is the Server is allowed to send info to https://paste.larry1123.net/
+     * Returns if the Server is allowed to send info to https://paste.larry1123.net/
      *
      * @return true is allowed false not allowed
      */
@@ -29,20 +30,6 @@ public interface LoggerSettings {
      * @param state
      */
     public void setPastingAllowed(boolean state);
-
-    /**
-     * Returns the User Name to post paste as.
-     *
-     * @return Returns the User Name to post paste as.
-     */
-    public String getUserName();
-
-    /**
-     * TODO
-     *
-     * @param name
-     */
-    public void setUserName(String name);
 
     /**
      * Get the Settings for how to Split Log Files

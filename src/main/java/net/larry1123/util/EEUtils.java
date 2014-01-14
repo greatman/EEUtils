@@ -14,6 +14,7 @@ public class EEUtils {
     }
 
     public static LoggerSettings getLoggerSettings() {
+        if (loggerSettings == null) throw new NullPointerException("LoggerSettings is null");
         return loggerSettings;
     }
 
