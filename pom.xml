@@ -13,12 +13,17 @@
         <canary.lib.version>1.0-RC-4-SNAPSHOT</canary.lib.version>
     </properties>
 
+    <organization>
+        <name>ElecEntertainment</name>
+    </organization>
+
     <developers>
         <developer>
-            <id>1</id>
+            <id>1123</id>
             <name>Larry1123</name>
             <email>larry1123@larry1123.net</email>
             <url>https://larry1123.net</url>
+            <organization>ElecEntertainment</organization>
         </developer>
     </developers>
 
@@ -27,9 +32,16 @@
         <url>http://ci.larry1123.net</url>
     </ciManagement>
 
+    <licenses>
+        <license>
+            <name>Apache v2 License</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+        </license>
+    </licenses>
+
     <scm>
-        <connection>git:https://github.com/ElecEntertainment/EEUtils.git</connection>
-        <developerConnection>git:https://github.com/ElecEntertainment/EEUtils.git</developerConnection>
+        <connection>scm:git:https://github.com/ElecEntertainment/EEUtils.git</connection>
+        <developerConnection>scm:git:https://github.com/ElecEntertainment/EEUtils.git</developerConnection>
         <url>https://github.com/ElecEntertainment/EEUtils</url>
     </scm>
 
@@ -66,6 +78,7 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
+
             <!-- JAR creation plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -102,6 +115,7 @@
         </plugins>
     </build>
 
+    <!-- Add Build number to a Jenkins build -->
     <profiles>
         <profile>
             <id>jenkins</id>
