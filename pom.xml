@@ -4,6 +4,7 @@
     <groupId>net.larry1123</groupId>
     <artifactId>EEUtils</artifactId>
     <version>1.2.5</version>
+    <inceptionYear>2013</inceptionYear>
 
     <properties>
         <build.number></build.number>
@@ -15,6 +16,7 @@
 
     <organization>
         <name>ElecEntertainment</name>
+        <url>https://forums.elec.larry1123.net/</url>
     </organization>
 
     <developers>
@@ -24,6 +26,7 @@
             <email>larry1123@larry1123.net</email>
             <url>https://larry1123.net</url>
             <organization>ElecEntertainment</organization>
+            <organizationUrl>https://forums.elec.larry1123.net/</organizationUrl>
         </developer>
     </developers>
 
@@ -42,6 +45,7 @@
     <scm>
         <connection>scm:git:https://github.com/ElecEntertainment/EEUtils.git</connection>
         <developerConnection>scm:git:https://github.com/ElecEntertainment/EEUtils.git</developerConnection>
+        <tag></tag>
         <url>https://github.com/ElecEntertainment/EEUtils</url>
     </scm>
 
