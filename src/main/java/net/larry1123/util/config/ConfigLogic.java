@@ -7,6 +7,10 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
+/**
+ * The Logic for Loading and saving config files was moved to it's own class so if for some reason something using EEutils
+ * can change the ConfigFile class.
+ */
 public class ConfigLogic {
 
     /**

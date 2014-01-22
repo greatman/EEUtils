@@ -2,15 +2,60 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.larry1123</groupId>
+    <artifactId>EEUtils</artifactId>
     <version>1.2.5</version>
+
+    <properties>
+        <EEutil.groupID>net.larry1123</EEutil.groupID>
+        <EEutil.name>EEUtils</EEutil.name>
+        <EEutil.version>1.2.5</EEutil.version>
+        <canary.lib.version>1.0-RC-4-SNAPSHOT</canary.lib.version>
+    </properties>
+
+    <developers>
+        <developer>
+            <id>1</id>
+            <name>Larry1123</name>
+            <email>larry1123@larry1123.net</email>
+            <url>https://larry1123.net</url>
+        </developer>
+    </developers>
+
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>http://ci.larry1123.net</url>
+    </ciManagement>
+
+    <scm>
+        <connection>git:https://github.com/ElecEntertainment/EEUtils.git</connection>
+        <developerConnection>git:https://github.com/ElecEntertainment/EEUtils.git</developerConnection>
+        <url>https://github.com/ElecEntertainment/EEUtils</url>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/ElecEntertainment/EEUtils/issues</url>
+    </issueManagement>
+
     <build>
         <defaultGoal>clean install</defaultGoal>
+
         <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
             </resource>
         </resources>
+        <outputDirectory>build/main</outputDirectory>
+
+        <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
+        <testResources>
+            <testResource>
+                <directory>${basedir}/src/test/resources</directory>
+            </testResource>
+        </testResources>
+        <testOutputDirectory>build/test</testOutputDirectory>
+
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -55,6 +100,24 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>jenkins</id>
+            <activation>
+                <property>
+                    <name>BUILD_NUMBER</name>
+                </property>
+            </activation>
+            <properties>
+                <build.number>BUILD_NUMBER</build.number>
+            </properties>
+            <build>
+                <finalName>${project.name}-${project.version}-${build.number}</finalName>
+            </build>
+        </profile>
+    </profiles>
+
     <repositories>
         <repository>
             <id>Repo1123</id>
@@ -62,11 +125,7 @@
             <url>http://ci.larry1123.net/plugin/repository/everything</url>
         </repository>
     </repositories>
-    <ciManagement>
-        <system>Jenkins</system>
-        <url>http://ci.larry1123.net</url>
-    </ciManagement>
-    <artifactId>EEUtils</artifactId>
+
     <dependencies>
         <dependency>
             <groupId>net.visualillusionsent</groupId>
@@ -77,18 +136,22 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
     </dependencies>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>net.visualillusionsent</groupId>
                 <artifactId>viutils</artifactId>
                 <version>1.2.2-SNAPSHOT</version>
+                <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>3.1</version>
+                <scope>compile</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
+
 </project>
