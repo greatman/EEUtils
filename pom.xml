@@ -6,6 +6,7 @@
     <version>1.2.5</version>
 
     <properties>
+        <build.number></build.number>
         <EEutil.groupID>net.larry1123</EEutil.groupID>
         <EEutil.name>EEUtils</EEutil.name>
         <EEutil.version>1.2.5</EEutil.version>
@@ -110,11 +111,8 @@
                 </property>
             </activation>
             <properties>
-                <build.number>BUILD_NUMBER</build.number>
+                <build.number>-${BUILD_NUMBER}</build.number>
             </properties>
-            <build>
-                <finalName>${project.name}-${project.version}-${build.number}</finalName>
-            </build>
         </profile>
     </profiles>
 
