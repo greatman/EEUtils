@@ -47,7 +47,6 @@
                 <directory>${basedir}/src/main/resources</directory>
             </resource>
         </resources>
-        <outputDirectory>build/main</outputDirectory>
 
         <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
         <testResources>
@@ -55,7 +54,8 @@
                 <directory>${basedir}/src/test/resources</directory>
             </testResource>
         </testResources>
-        <testOutputDirectory>build/test</testOutputDirectory>
+
+        <finalName>${project.name}-${project.version}${build.number}</finalName>
 
         <plugins>
             <plugin>
