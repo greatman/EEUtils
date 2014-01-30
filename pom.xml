@@ -1,17 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>net.larry1123</groupId>
     <artifactId>EEUtils</artifactId>
-    <version>1.2.5</version>
+    <version>1.2.5-SNAPSHOT</version>
     <inceptionYear>2013</inceptionYear>
 
     <properties>
         <build.number></build.number>
-        <EEutil.groupID>net.larry1123</EEutil.groupID>
-        <EEutil.name>EEUtils</EEutil.name>
-        <EEutil.version>1.2.5</EEutil.version>
-        <canary.lib.version>1.0-RC-4-SNAPSHOT</canary.lib.version>
     </properties>
 
     <organization>
@@ -45,7 +42,7 @@
     <scm>
         <connection>scm:git:https://github.com/ElecEntertainment/EEUtils.git</connection>
         <developerConnection>scm:git:https://github.com/ElecEntertainment/EEUtils.git</developerConnection>
-        <tag></tag>
+        <tag>1.2.5-SNAPSHOT</tag>
         <url>https://github.com/ElecEntertainment/EEUtils</url>
     </scm>
 
@@ -136,6 +133,16 @@
 
     <repositories>
         <repository>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </snapshots>
             <id>Repo1123</id>
             <name>Larry1123's Repo</name>
             <url>http://ci.larry1123.net/plugin/repository/everything</url>
@@ -150,6 +157,14 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
         </dependency>
     </dependencies>
 
@@ -166,6 +181,18 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>3.1</version>
                 <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>14.0.1</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.11</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

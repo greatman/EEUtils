@@ -1,5 +1,7 @@
 package net.larry1123.util.logger;
 
+import java.util.logging.Logger;
+
 public interface LoggerSettings {
 
     /**
@@ -39,6 +41,11 @@ public interface LoggerSettings {
     public FileSplits getSplit();
 
     /**
+     * Set the Setting for how to split log files.
+     */
+    public void setFileSplit(FileSplits fileSplit);
+
+    /**
      * Gets the Currently set time stamp for Log files if Splitting is enabled
      * May be null if it has not been used
      *
@@ -72,6 +79,13 @@ public interface LoggerSettings {
      *
      * @return
      */
-    public String getParentLogger();
+    public Logger getParentLogger();
+
+    /**
+     * TODO
+     *
+     * @param logger
+     */
+    public void setParentLogger(Logger logger);
 
 }

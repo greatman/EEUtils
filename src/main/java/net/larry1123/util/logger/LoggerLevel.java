@@ -7,7 +7,6 @@ public class LoggerLevel extends Level {
     private static int baselvl = 10000;
     private static final long serialVersionUID = 912743220309496892L;
     private final String id;
-    private String linkedpath;
 
     private static int genLevel() {
         baselvl++;

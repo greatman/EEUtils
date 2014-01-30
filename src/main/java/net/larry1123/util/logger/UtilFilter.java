@@ -19,6 +19,9 @@ final class UtilFilter implements Filter {
         allowed.add(lvl);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isLoggable(LogRecord rec) {
 

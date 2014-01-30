@@ -2,94 +2,22 @@ package net.larry1123.util.logger;
 
 import net.larry1123.util.EEUtils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 public class EELogger extends Logger {
 
-    private static final LoggerSettings config = EEUtils.getLoggerSettings();
-
-    /**
-     * Logger to log about logging ... yea I know
-     */
-    public static final EELogger log = new EELogger("ElecEntertainmentLogger");
-
-    /**
-     * Gets the Path for Log files
-     *
-     * @return
-     */
-    public static String getLogPath() {
-        return config.getLoggerPath();
-    }
-
-    /**
-     * Holds All EELoggers
-     */
-    private final static HashMap<String, EELogger> loggers = new HashMap<String, EELogger>();
-
-    static {
-        File logDir = new File(getLogPath());
-        // Ensure that the Directory is there
-        if (!logDir.exists()) {
-            logDir.mkdirs();
-        }
-
-        // Lets set the Parent Logger if we have one
-        if (config.getParentLogger() != null) {
-            log.setParent(Logger.getLogger(config.getParentLogger()));
-        }
-
-        // Make sure we see every log level
-        log.setLevel(Level.ALL);
-        ConsoleHandler consolehandler = new ConsoleHandler();
-        // Lets format this
-        consolehandler.setFormatter(new UtilsLogFormat());
-        // Making sure that we format everything
-        consolehandler.setLevel(Level.ALL);
-        // Got to make sure we add the Handler
-        log.addHandler(consolehandler);
-    }
-
-    /**
-     * TODO
-     */
-    public final static String fileHandlerError = log.addLoggerLevel("ElecEntertainmentLogger", "FileHandler");
-
-    /**
-     * Gets the EELogger for the given name
-     *
-     * @param name Name of the Logger
-     * @return
-     */
-    public static EELogger getLogger(String name) {
-        if (!loggers.containsKey(name)) {
-            EELogger logman = new EELogger(name);
-            loggers.put(logman.getName(), logman);
-        }
-        return loggers.get(name);
-    }
-
-    /**
-     * Gets the EELogger for the given name as a sub of the given parent
-     *
-     * @param name
-     * @param parent
-     * @return
-     */
-    public static EELogger getSubLogger(String name, EELogger parent) {
-        if (!loggers.containsKey(parent.getName() + ":" + name)) {
-            EELogger logger = new EELogger(name, parent);
-            loggers.put(logger.getName(), logger);
-        }
-        return loggers.get(parent.getName() + ":" + name);
+    private LoggerSettings getConfig() {
+        return EELogManager.getLoggerSettings();
     }
 
     /**
@@ -98,17 +26,17 @@ public class EELogger extends Logger {
     public final String path;
     public final String logpath;
 
-    private EELogger(String name) {
+    public EELogger(String name) {
         super(name, null);
-        path = getLogPath() + name + "/";
+        path = getConfig().getLoggerPath() + name + "/";
         logpath = path + name;
         FileManager.setUpFile(this, logpath);
-        if (log != null) {
-            setParent(log);
+        if (getConfig().getParentLogger() != null) {
+            setParent(getConfig().getParentLogger());
         }
     }
 
-    private EELogger(String name, EELogger parent) {
+    public EELogger(String name, EELogger parent) {
         super(parent.getName() + ":" + name, null);
         path = parent.path;
         logpath = path + parent.getName() + ":" + name;
@@ -184,13 +112,15 @@ public class EELogger extends Logger {
     @Override
     public void log(LogRecord logRecord) {
         Level level = logRecord.getLevel();
+        StringBuilder message = new StringBuilder();
         if (level instanceof LoggerLevel) {
             LoggerLevel handle = (LoggerLevel) level;
             if (!handle.getPrefix().isEmpty()) {
-                logRecord.setMessage("[" + handle.getPrefix() + "] " + logRecord.getMessage());
+                message.append("[").append(handle.getPrefix()).append("] ").append(logRecord.getMessage());
             }
         }
-        logRecord.setMessage("[" + this.getName() + "] " + logRecord.getMessage());
+        message.insert(0, "[").insert(0, this.getName()).insert(0, "] ");
+        logRecord.setMessage(message.toString());
 
         super.log(logRecord);
     }
@@ -313,7 +243,7 @@ public class EELogger extends Logger {
     public boolean logStackTraceToPasteBin(Level lvl, String message, Throwable thrown) {
         log(lvl, message, thrown);
 
-        if (config.isPastingAllowed()) {
+        if (getConfig().isPastingAllowed()) {
             try {
                 URL url = new URL("http://paste.larry1123.net/api/xml/create");
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -350,10 +280,10 @@ public class EELogger extends Logger {
                 return responseCode == 200 && response.toString().contains("<id>");
 
             } catch (MalformedURLException e) {
-                log.log(Level.SEVERE, "Failed to send: Malformed", e);
+                EELogger.getLogger("EEUtil").log(Level.SEVERE, "Failed to send: Malformed", e);
                 return false;
             } catch (IOException e) {
-                log.log(Level.SEVERE, "Failed to send: IOException", e);
+                EELogger.getLogger("EEUtil").log(Level.SEVERE, "Failed to send: IOException", e);
                 return false;
             }
         } else {

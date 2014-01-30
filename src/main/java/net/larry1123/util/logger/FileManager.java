@@ -16,12 +16,10 @@ import java.util.logging.Level;
 
 public class FileManager {
 
-    private static final LoggerSettings config = EEUtils.getLoggerSettings();
-
     private static final HashMap<String, FileHandler> fileHandlers = new HashMap<String, FileHandler>();
     private static final HashMap<FileHandler, UtilFilter> fileFilters = new HashMap<FileHandler, UtilFilter>();
-    private static final HashMap<EELogger, String> loggerspaths = new HashMap<EELogger, String>();
-    private static final HashMap<LoggerLevel, String> levelpaths = new HashMap<LoggerLevel, String>();
+    private static final HashMap<EELogger, String> loggerPaths = new HashMap<EELogger, String>();
+    private static final HashMap<LoggerLevel, String> levelPaths = new HashMap<LoggerLevel, String>();
 
     /**
      * Returns the TimeDate that should be used for files at this time
@@ -37,48 +35,48 @@ public class FileManager {
             e.printStackTrace();
         }
 
-        if (!(config.getCurrentSplit() == null || config.getCurrentSplit().equals(""))) {
+        if (!(getConfig().getCurrentSplit() == null || getConfig().getCurrentSplit().equals(""))) {
             Date currentsplit;
             try {
-                currentsplit = DateUtils.parseDate(config.getCurrentSplit(), DateFormatUtils.SMTP_DATETIME_FORMAT.getPattern());
+                currentsplit = DateUtils.parseDate(getConfig().getCurrentSplit(), DateFormatUtils.SMTP_DATETIME_FORMAT.getPattern());
             } catch (ParseException e) {
-                config.setCurrentSplit(set);
+                getConfig().setCurrentSplit(set);
                 return set.replace(":", "_");
             }
 
             Date test;
-            switch (config.getSplit()) {
+            switch (getConfig().getSplit()) {
                 case HOUR:
                     test = DateUtils.addHours(currentTime, 1);
                     test = DateUtils.setMinutes(test, 0);
                     test = DateUtils.setSeconds(test, 0);
                     test = DateUtils.setMilliseconds(test, 0);
                     if (test.after(currentsplit)) {
-                        set = config.getCurrentSplit();
+                        set = getConfig().getCurrentSplit();
                     }
                     break;
                 case DAY:
                     if (DateUtils.isSameDay(currentTime, currentsplit)) {
-                        set = config.getCurrentSplit();
+                        set = getConfig().getCurrentSplit();
                     }
                     break;
                 case WEEK:
                     test = DateUtils.ceiling(currentTime, Calendar.WEEK_OF_MONTH);
                     if (test.after(currentsplit)) {
-                        set = config.getCurrentSplit();
+                        set = getConfig().getCurrentSplit();
                     }
                     break;
                 case MONTH:
                     test = DateUtils.ceiling(currentTime, Calendar.MONTH);
                     if (test.after(currentsplit)) {
-                        set = config.getCurrentSplit();
+                        set = getConfig().getCurrentSplit();
                     }
                     break;
                 default:
                     break;
             }
         }
-        config.setCurrentSplit(set);
+        getConfig().setCurrentSplit(set);
         return set.replace(":", "_");
     }
 
@@ -92,14 +90,14 @@ public class FileManager {
     public static FileHandler setUpFile(EELogger logger, String logpathPath) {
         createDirectoryFromPath(logger.logpath);
         try {
-            FileHandler handler = gethandler(logger, logpathPath);
+            FileHandler handler = getHandler(logger, logpathPath);
             UtilFilter filter = fileFilters.get(handler);
             filter.setLogAll(true);
             return handler;
         } catch (SecurityException e) {
-            EELogger.log.logCustom(EELogger.fileHandlerError, "SecurityException", e);
+            EELogManager.getLogger("EEUtil").logCustom(LoggerLevels.getLoggerLevel("FileHandlerError"), "SecurityException", e);
         } catch (IOException e) {
-            EELogger.log.logCustom(EELogger.fileHandlerError, "IOException", e);
+            EELogManager.getLogger("EEUtil").logCustom(LoggerLevels.getLoggerLevel("FileHandlerError"), "IOException", e);
         }
         return null;
     }
@@ -133,16 +131,15 @@ public class FileManager {
      * @throws SecurityException
      * @throws IOException
      */
-    public static FileHandler gethandler(EELogger logger, LoggerLevel lvl, String pathName) throws SecurityException,
-            IOException {
+    public static FileHandler getHandler(EELogger logger, LoggerLevel lvl, String pathName) throws SecurityException, IOException {
 
         FileHandler handler = null;
 
-        if (!config.getSplit().equals(FileSplits.NONE)) {
+        if (!getConfig().getSplit().equals(FileSplits.NONE)) {
             pathName = pathName + "_" + FileManager.dateTime();
         }
 
-        pathName = pathName + ".log";
+        pathName = pathName + "." + getConfig().getFileType();
 
         if (!fileHandlers.containsKey(pathName)) {
 
@@ -158,7 +155,7 @@ public class FileManager {
             logger.addHandler(handler);
 
             fileHandlers.put(pathName, handler);
-            levelpaths.put(lvl, pathName);
+            levelPaths.put(lvl, pathName);
         }
         if (handler == null) {
             handler = fileHandlers.get(pathName);
@@ -178,16 +175,15 @@ public class FileManager {
      * @throws SecurityException
      * @throws IOException
      */
-    public static FileHandler gethandler(EELogger logger, String pathName) throws SecurityException,
-            IOException {
+    public static FileHandler getHandler(EELogger logger, String pathName) throws SecurityException, IOException {
 
         FileHandler handler = null;
 
-        if (!config.getSplit().equals(FileSplits.NONE)) {
+        if (!getConfig().getSplit().equals(FileSplits.NONE)) {
             pathName = pathName + "_" + FileManager.dateTime();
         }
 
-        pathName = pathName + ".log";
+        pathName = pathName + "." + getConfig().getFileType();
 
         if (!fileHandlers.containsKey(pathName)) {
 
@@ -203,7 +199,7 @@ public class FileManager {
             logger.addHandler(handler);
 
             fileHandlers.put(pathName, handler);
-            loggerspaths.put(logger, pathName);
+            loggerPaths.put(logger, pathName);
         }
         if (handler == null) {
             handler = fileHandlers.get(pathName);
@@ -217,11 +213,11 @@ public class FileManager {
      * @param lvl
      */
     public static void removeLoggerLevel(LoggerLevel lvl) {
-        fileFilters.get(fileHandlers.get(levelpaths.remove(lvl))).removeLogLevel(lvl);
+        fileFilters.get(fileHandlers.get(levelPaths.remove(lvl))).removeLogLevel(lvl);
     }
 
     public static void updateFileHandlers() {
-        for (EELogger logger : loggerspaths.keySet()) {
+        for (EELogger logger : loggerPaths.keySet()) {
             for (Handler handlerm : logger.getHandlers()) {
                 if (handlerm instanceof FileHandler) {
                     FileHandler handler = (FileHandler) handlerm;
@@ -229,11 +225,11 @@ public class FileManager {
                     if (!handler.getLevel().equals(Level.ALL)) {
                         LoggerLevel lvl = (LoggerLevel) handler.getLevel();
                         logger.removeHandler(handler);
-                        fileHandlers.remove(levelpaths.get(lvl));
-                        handler = setUpFile(logger, lvl, levelpaths.get(lvl));
+                        fileHandlers.remove(levelPaths.get(lvl));
+                        handler = setUpFile(logger, lvl, levelPaths.get(lvl));
                         handler.setFilter(filter);
                     } else {
-                        fileHandlers.remove(loggerspaths.get(logger));
+                        fileHandlers.remove(loggerPaths.get(logger));
                         logger.removeHandler(handler);
                         handler = setUpFile(logger, logger.logpath);
                         handler.setFilter(filter);
@@ -248,6 +244,10 @@ public class FileManager {
         if (!logDir.exists()) {
             logDir.mkdirs();
         }
+    }
+
+    private static LoggerSettings getConfig() {
+        return EELogManager.getLoggerSettings();
     }
 
 }
