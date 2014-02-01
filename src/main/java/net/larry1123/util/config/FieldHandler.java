@@ -39,7 +39,11 @@ public class FieldHandler {
      * @throws NoSuchFieldException is thrown if the config object does not contain the given Field
      */
     public FieldHandler(Field field, PropertiesFile propertiesFile, Object config, String fieldName) throws NoSuchFieldException {
-        config.getClass().getField(field.getName());
+        try {
+            config.getClass().getDeclaredField(field.getName());
+        } catch (NoSuchFieldException e) {
+            config.getClass().getField(field.getName());
+        }
         this.field = field;
         // Ensure we can use the field
         this.getField().setAccessible(true);
@@ -70,7 +74,11 @@ public class FieldHandler {
      * @throws NoSuchFieldException is thrown if the config object does not contain the given Field
      */
     public FieldHandler(Field field, PropertiesFile propertiesFile, Object config) throws NoSuchFieldException {
-        config.getClass().getField(field.getName());
+        try {
+            config.getClass().getDeclaredField(field.getName());
+        } catch (NoSuchFieldException e) {
+            config.getClass().getField(field.getName());
+        }
         this.field = field;
         // Ensure we can use the field
         this.getField().setAccessible(true);
@@ -204,7 +212,7 @@ public class FieldHandler {
     public void setStringArray() {
         if (getValue() == null) throw new NullPointerException("Value can not be null when setting");
         if (TypeValues.getFromType(getFieldType()).isList())
-            setValue(Lists.newArrayList((List<String>) getValue()));
+            setValue(((List<String>) getValue()).toArray(new String[0]));
         if (!TypeUtils.isAssignable(getValue().getClass(), String[].class)) throw new IllegalArgumentException();
         if (ArrayUtils.isNotEmpty((String[]) getValue()))
             getPropertiesFile().setStringArray(getFieldName(), getSpacer(), (String[]) getValue());
@@ -243,7 +251,7 @@ public class FieldHandler {
         if (TypeValues.getFromType(getFieldType()).isList())
             setValue(Ints.toArray((List<Integer>) getValue()));
         if (TypeValues.getFromType(getFieldType()).isWrappedArray()) {
-            if (TypeValues.getFromType(getFieldType()).equals(TypeValues.FLOATWRAPARRAY))
+            if (TypeValues.getFromType(getFieldType()).equals(TypeValues.INTEGERWRAPARRAY))
                 setValue(ArrayUtils.toPrimitive((Integer[]) getValue()));
         }
         if (!TypeUtils.isAssignable(getValue().getClass(), int[].class)) throw new IllegalArgumentException();

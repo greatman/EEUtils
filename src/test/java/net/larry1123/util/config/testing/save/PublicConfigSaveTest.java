@@ -1,6 +1,7 @@
-package net.larry1123.util.config.testing;
+package net.larry1123.util.config.testing.save;
 
 import net.larry1123.util.config.FieldHandler;
+import net.larry1123.util.config.testing.TestConfigFile;
 import net.visualillusionsent.utils.PropertiesFile;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assert;
@@ -13,9 +14,9 @@ import java.util.ArrayList;
  * @author Larry1123
  * @since 1/31/14 - 9:33 AM
  */
-public class ConfigSaveTest {
+public class PublicConfigSaveTest {
 
-    private String savePath = "src/test/resources/save.cfg";
+    private String savePath = "target/tests/resources/save.cfg";
 
     @Test
     public void publicBooleanSave() {
@@ -345,7 +346,7 @@ public class ConfigSaveTest {
 
     @Test
     public void publicFloatArraySave() {
-        String fieldName = "publicDoubleArray";
+        String fieldName = "publicFloatArray";
         PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
         TestConfigFile configFile = new TestConfigFile();
         Field testField = getField(configFile, fieldName);
@@ -365,7 +366,7 @@ public class ConfigSaveTest {
 
     @Test
     public void PublicFloatArraySave() {
-        String fieldName = "PublicDoubleArray";
+        String fieldName = "PublicFloatArray";
         PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
         TestConfigFile configFile = new TestConfigFile();
         Field testField = getField(configFile, fieldName);
@@ -386,7 +387,7 @@ public class ConfigSaveTest {
 
     @Test
     public void publicFloatListSave() {
-        String fieldName = "publicDoubleList";
+        String fieldName = "publicFloatList";
         PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
         TestConfigFile configFile = new TestConfigFile();
         Field testField = getField(configFile, fieldName);
@@ -401,6 +402,376 @@ public class ConfigSaveTest {
             float[] testFieldValue = ArrayUtils.toPrimitive(
                     ((ArrayList<Float>) testField.get(configFile)).toArray(new Float[0]));
             Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getFloatArray(fieldName), testFieldValue));
+        } catch (IllegalAccessException e) {
+            Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
+        }
+    }
+
+    @Test
+    public void publicLongSave() {
+        String fieldName = "publicLong";
+        PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
+        TestConfigFile configFile = new TestConfigFile();
+        Field testField = getField(configFile, fieldName);
+        try {
+            FieldHandler handler = new FieldHandler(testField, savePropertiesFile, configFile);
+            handler.setLong();
+            savePropertiesFile.save();
+        } catch (NoSuchFieldException e) {
+            Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
+        }
+        try {
+            Assert.assertTrue(savePropertiesFile.getLong(fieldName) == testField.getLong(configFile));
+        } catch (IllegalAccessException e) {
+            Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
+        }
+    }
+
+    @Test
+    public void PublicLongSave() {
+        String fieldName = "PublicLong";
+        PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
+        TestConfigFile configFile = new TestConfigFile();
+        Field testField = getField(configFile, fieldName);
+        try {
+            FieldHandler handler = new FieldHandler(testField, savePropertiesFile, configFile);
+            handler.setLong();
+            savePropertiesFile.save();
+        } catch (NoSuchFieldException e) {
+            Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
+        }
+        try {
+            Assert.assertTrue(savePropertiesFile.getLong(fieldName) == (Long) testField.get(configFile));
+        } catch (IllegalAccessException e) {
+            Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
+        }
+    }
+
+    @Test
+    public void publicLongArraySave() {
+        String fieldName = "publicLongArray";
+        PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
+        TestConfigFile configFile = new TestConfigFile();
+        Field testField = getField(configFile, fieldName);
+        try {
+            FieldHandler handler = new FieldHandler(testField, savePropertiesFile, configFile);
+            handler.setLongArray();
+            savePropertiesFile.save();
+        } catch (NoSuchFieldException e) {
+            Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
+        }
+        try {
+            Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getLongArray(fieldName), testField.get(configFile)));
+        } catch (IllegalAccessException e) {
+            Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
+        }
+    }
+
+    @Test
+    public void PublicLongArrayArraySave() {
+        String fieldName = "PublicLongArray";
+        PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
+        TestConfigFile configFile = new TestConfigFile();
+        Field testField = getField(configFile, fieldName);
+        try {
+            FieldHandler handler = new FieldHandler(testField, savePropertiesFile, configFile);
+            handler.setLongArray();
+            savePropertiesFile.save();
+        } catch (NoSuchFieldException e) {
+            Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
+        }
+        try {
+            long[] testFieldValue = ArrayUtils.toPrimitive((Long[]) testField.get(configFile));
+            Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getLongArray(fieldName), testFieldValue));
+        } catch (IllegalAccessException e) {
+            Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
+        }
+    }
+
+    @Test
+    public void publicLongListSave() {
+        String fieldName = "publicLongList";
+        PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
+        TestConfigFile configFile = new TestConfigFile();
+        Field testField = getField(configFile, fieldName);
+        try {
+            FieldHandler handler = new FieldHandler(testField, savePropertiesFile, configFile);
+            handler.setLongArray();
+            savePropertiesFile.save();
+        } catch (NoSuchFieldException e) {
+            Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
+        }
+        try {
+            long[] testFieldValue = ArrayUtils.toPrimitive(
+                    ((ArrayList<Long>) testField.get(configFile)).toArray(new Long[0]));
+            Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getLongArray(fieldName), testFieldValue));
+        } catch (IllegalAccessException e) {
+            Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
+        }
+    }
+
+    @Test
+    public void publicIntegerSave() {
+        String fieldName = "publicInteger";
+        PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
+        TestConfigFile configFile = new TestConfigFile();
+        Field testField = getField(configFile, fieldName);
+        try {
+            FieldHandler handler = new FieldHandler(testField, savePropertiesFile, configFile);
+            handler.setInteger();
+            savePropertiesFile.save();
+        } catch (NoSuchFieldException e) {
+            Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
+        }
+        try {
+            Assert.assertTrue(savePropertiesFile.getInt(fieldName) == testField.getInt(configFile));
+        } catch (IllegalAccessException e) {
+            Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
+        }
+    }
+
+    @Test
+    public void PublicIntegerSave() {
+        String fieldName = "PublicInteger";
+        PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
+        TestConfigFile configFile = new TestConfigFile();
+        Field testField = getField(configFile, fieldName);
+        try {
+            FieldHandler handler = new FieldHandler(testField, savePropertiesFile, configFile);
+            handler.setInteger();
+            savePropertiesFile.save();
+        } catch (NoSuchFieldException e) {
+            Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
+        }
+        try {
+            Assert.assertTrue(savePropertiesFile.getInt(fieldName) == (Integer) testField.get(configFile));
+        } catch (IllegalAccessException e) {
+            Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
+        }
+    }
+
+    @Test
+    public void publicIntegerArraySave() {
+        String fieldName = "publicIntegerArray";
+        PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
+        TestConfigFile configFile = new TestConfigFile();
+        Field testField = getField(configFile, fieldName);
+        try {
+            FieldHandler handler = new FieldHandler(testField, savePropertiesFile, configFile);
+            handler.setIntegerArray();
+            savePropertiesFile.save();
+        } catch (NoSuchFieldException e) {
+            Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
+        }
+        try {
+            Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getIntArray(fieldName), testField.get(configFile)));
+        } catch (IllegalAccessException e) {
+            Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
+        }
+    }
+
+    @Test
+    public void PublicIntegerArraySave() {
+        String fieldName = "PublicIntegerArray";
+        PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
+        TestConfigFile configFile = new TestConfigFile();
+        Field testField = getField(configFile, fieldName);
+        try {
+            FieldHandler handler = new FieldHandler(testField, savePropertiesFile, configFile);
+            handler.setIntegerArray();
+            savePropertiesFile.save();
+        } catch (NoSuchFieldException e) {
+            Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
+        }
+        try {
+            int[] testFieldValue = ArrayUtils.toPrimitive((Integer[]) testField.get(configFile));
+            Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getIntArray(fieldName), testFieldValue));
+        } catch (IllegalAccessException e) {
+            Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
+        }
+    }
+
+    @Test
+    public void publicIntegerListSave() {
+        String fieldName = "publicIntegerList";
+        PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
+        TestConfigFile configFile = new TestConfigFile();
+        Field testField = getField(configFile, fieldName);
+        try {
+            FieldHandler handler = new FieldHandler(testField, savePropertiesFile, configFile);
+            handler.setIntegerArray();
+            savePropertiesFile.save();
+        } catch (NoSuchFieldException e) {
+            Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
+        }
+        try {
+            int[] testFieldValue = ArrayUtils.toPrimitive(
+                    ((ArrayList<Integer>) testField.get(configFile)).toArray(new Integer[0]));
+            Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getIntArray(fieldName), testFieldValue));
+        } catch (IllegalAccessException e) {
+            Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
+        }
+    }
+
+    @Test
+    public void publicShortSave() {
+        String fieldName = "publicShort";
+        PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
+        TestConfigFile configFile = new TestConfigFile();
+        Field testField = getField(configFile, fieldName);
+        try {
+            FieldHandler handler = new FieldHandler(testField, savePropertiesFile, configFile);
+            handler.setShort();
+            savePropertiesFile.save();
+        } catch (NoSuchFieldException e) {
+            Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
+        }
+        try {
+            Assert.assertTrue(savePropertiesFile.getShort(fieldName) == testField.getShort(configFile));
+        } catch (IllegalAccessException e) {
+            Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
+        }
+    }
+
+    @Test
+    public void PublicShortSave() {
+        String fieldName = "PublicShort";
+        PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
+        TestConfigFile configFile = new TestConfigFile();
+        Field testField = getField(configFile, fieldName);
+        try {
+            FieldHandler handler = new FieldHandler(testField, savePropertiesFile, configFile);
+            handler.setShort();
+            savePropertiesFile.save();
+        } catch (NoSuchFieldException e) {
+            Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
+        }
+        try {
+            Assert.assertTrue(savePropertiesFile.getShort(fieldName) == (Short) testField.get(configFile));
+        } catch (IllegalAccessException e) {
+            Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
+        }
+    }
+
+    @Test
+    public void publicShortArraySave() {
+        String fieldName = "publicShortArray";
+        PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
+        TestConfigFile configFile = new TestConfigFile();
+        Field testField = getField(configFile, fieldName);
+        try {
+            FieldHandler handler = new FieldHandler(testField, savePropertiesFile, configFile);
+            handler.setShortArray();
+            savePropertiesFile.save();
+        } catch (NoSuchFieldException e) {
+            Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
+        }
+        try {
+            Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getShortArray(fieldName), testField.get(configFile)));
+        } catch (IllegalAccessException e) {
+            Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
+        }
+    }
+
+    @Test
+    public void PublicShortArraySave() {
+        String fieldName = "PublicShortArray";
+        PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
+        TestConfigFile configFile = new TestConfigFile();
+        Field testField = getField(configFile, fieldName);
+        try {
+            FieldHandler handler = new FieldHandler(testField, savePropertiesFile, configFile);
+            handler.setShortArray();
+            savePropertiesFile.save();
+        } catch (NoSuchFieldException e) {
+            Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
+        }
+        try {
+            short[] testFieldValue = ArrayUtils.toPrimitive((Short[]) testField.get(configFile));
+            Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getShortArray(fieldName), testFieldValue));
+        } catch (IllegalAccessException e) {
+            Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
+        }
+    }
+
+    @Test
+    public void publicShortListSave() {
+        String fieldName = "publicShortList";
+        PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
+        TestConfigFile configFile = new TestConfigFile();
+        Field testField = getField(configFile, fieldName);
+        try {
+            FieldHandler handler = new FieldHandler(testField, savePropertiesFile, configFile);
+            handler.setShortArray();
+            savePropertiesFile.save();
+        } catch (NoSuchFieldException e) {
+            Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
+        }
+        try {
+            short[] testFieldValue = ArrayUtils.toPrimitive(
+                    ((ArrayList<Short>) testField.get(configFile)).toArray(new Short[0]));
+            Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getShortArray(fieldName), testFieldValue));
+        } catch (IllegalAccessException e) {
+            Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
+        }
+    }
+
+    @Test
+    public void publicStringSave() {
+        String fieldName = "publicString";
+        PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
+        TestConfigFile configFile = new TestConfigFile();
+        Field testField = getField(configFile, fieldName);
+        try {
+            FieldHandler handler = new FieldHandler(testField, savePropertiesFile, configFile);
+            handler.setString();
+            savePropertiesFile.save();
+        } catch (NoSuchFieldException e) {
+            Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
+        }
+        try {
+            Assert.assertTrue(savePropertiesFile.getString(fieldName).equals(testField.get(configFile)));
+        } catch (IllegalAccessException e) {
+            Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
+        }
+    }
+
+    @Test
+    public void publicStringArraySave() {
+        String fieldName = "publicStringArray";
+        PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
+        TestConfigFile configFile = new TestConfigFile();
+        Field testField = getField(configFile, fieldName);
+        try {
+            FieldHandler handler = new FieldHandler(testField, savePropertiesFile, configFile);
+            handler.setStringArray();
+            savePropertiesFile.save();
+        } catch (NoSuchFieldException e) {
+            Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
+        }
+        try {
+            Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getStringArray(fieldName), testField.get(configFile)));
+        } catch (IllegalAccessException e) {
+            Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
+        }
+    }
+
+    @Test
+    public void publicStringListSave() {
+        String fieldName = "publicStringList";
+        PropertiesFile savePropertiesFile = new PropertiesFile(savePath);
+        TestConfigFile configFile = new TestConfigFile();
+        Field testField = getField(configFile, fieldName);
+        try {
+            FieldHandler handler = new FieldHandler(testField, savePropertiesFile, configFile);
+            handler.setStringArray();
+            savePropertiesFile.save();
+        } catch (NoSuchFieldException e) {
+            Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
+        }
+        try {
+            String[] testFieldValue = ((ArrayList<String>) testField.get(configFile)).toArray(new String[0]);
+            Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getStringArray(fieldName), testFieldValue));
         } catch (IllegalAccessException e) {
             Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
         }
