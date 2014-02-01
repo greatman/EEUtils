@@ -5,7 +5,6 @@ import net.visualillusionsent.utils.PropertiesFile;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 
 /**
  * The Logic for Loading and saving config files was moved to it's own class so if for some reason something using EEutils
@@ -13,199 +12,134 @@ import java.lang.reflect.Type;
  */
 public class ConfigLogic {
 
-    /**
-     * Saves data to disk
-     */
-    public static void save(PropertiesFile propertiesFile, ConfigBase config, Field[] configFields) {
+    private final PropertiesFile propertiesFile;
+    private final ConfigBase config;
+
+    public ConfigLogic(PropertiesFile propertiesFile, ConfigBase config) {
         // Just got to make sure this stuff is not null
         if (propertiesFile == null) throw new NullPointerException("PropertiesFile can not be null");
         if (config == null) throw new NullPointerException("ConfigBase can not be null");
+        this.propertiesFile = propertiesFile;
+        this.config = config;
+    }
+
+    /**
+     * Saves data to disk
+     */
+    public void save(Field[] configFields) {
         // Lets not do anything if we have no Fields to take care of
-        if (ArrayUtils.isEmpty(configFields)) return;
+        if (ArrayUtils.isEmpty(ArrayUtils.nullToEmpty(configFields))) return;
 
         for (Field field : configFields) {
-            // Ensure we can use the field
-            field.setAccessible(true);
-            // Get type of field to be checked later
-            Type fieldType = field.getGenericType();
-            // Get the Annotation that we need
-            ConfigField ano = field.getAnnotation(ConfigField.class);
-            boolean hasSpacer = false;
-            // Checks if this field has a spacer set
-            if (!ano.spacer().equals("")) {
-                hasSpacer = true;
-            }
-            Object value = null;
-            boolean hasValue;
-            // Lets check if there is something to set
+
+            FieldHandler handler = null;
             try {
-                value = field.get(config);
-            } catch (IllegalArgumentException e1) {
-            } catch (IllegalAccessException e1) {
-            } finally {
-                hasValue = value != null;
+                handler = new FieldHandler(field, propertiesFile, config);
+            } catch (NoSuchFieldException e) {
+                // Should not happen but if it does lets
+                continue;
             }
-
-            // Should stop here and go onto the next one if there is no value to be saved
-            if (!hasValue) continue;
-
-            // Lets give this thing a name
-            String fieldName = (ano.name().equals("")) ? field.getName() : ano.name();
-
-            // if we have an array
-            byte[] barray;
-            double[] darray;
-            float[] farray;
-            int[] iarray;
-            long[] larray;
-            short[] sarray;
 
             // Time to get funky
-            switch (TypeValues.getFromType(fieldType)) {
+            switch (TypeValues.getFromType(handler.getFieldType())) {
 
                 // Boolean
                 case BOOLEANWRAP:
                 case BOOLEAN:
-                    propertiesFile.setBoolean(fieldName, (Boolean) value);
+                    handler.setBoolean();
                     break;
 
                 // Byte
                 case BYTEWRAP:
                 case BYTE:
-                    propertiesFile.setByte(fieldName, (Byte) value);
+                    handler.setByte();
                     break;
 
                 case BYTEWRAPARRAY:
-                    // Make Object Array into an Primitive Array
-                    value = ArrayUtils.toPrimitive((Byte[]) value);
                 case BYTEARRAY:
-                    barray = (byte[]) value;
-                    // Uses a custom spacer if given
-                    if (hasSpacer) {
-                        propertiesFile.setByteArray(fieldName, ano.spacer(), barray);
-                    } else {
-                        propertiesFile.setByteArray(fieldName, barray);
-                    }
+                case BYTELIST:
+                    handler.setByteArray();
                     break;
 
                 // Character
                 case CHARACTERWRAP:
                 case CHARACTER:
-                    propertiesFile.setCharacter(fieldName, (Character) value);
+                    handler.setCharacter();
                     break;
 
                 // Double
                 case DOUBLEWRAP:
                 case DOUBLE:
-                    propertiesFile.setDouble(fieldName, (Double) value);
+                    handler.setDouble();
                     break;
 
                 case DOUBLEWRAPARRAY:
-                    // Make Object Array into an Primitive Array
-                    value = ArrayUtils.toPrimitive((Double[]) value);
                 case DOUBLEARRAY:
-                    darray = (double[]) value;
-                    // Uses a custom spacer if given
-                    if (hasSpacer) {
-                        propertiesFile.setDoubleArray(fieldName, ano.spacer(), darray);
-                    } else {
-                        propertiesFile.setDoubleArray(fieldName, darray);
-                    }
+                case DOUBLELIST:
+                    handler.setDoubleArray();
                     break;
 
                 // Float
                 case FLOATWRAP:
                 case FLOAT:
-                    propertiesFile.setFloat(fieldName, (Float) value);
+                    handler.setFloat();
                     break;
 
                 case FLOATWRAPARRAY:
-                    // Make Object Array into an Primitive Array
-                    value = ArrayUtils.toPrimitive((Float[]) value);
                 case FLOATARRAY:
-                    farray = (float[]) value;
-                    // Uses a custom spacer if given
-                    if (hasSpacer) {
-                        propertiesFile.setFloatArray(fieldName, ano.spacer(), farray);
-                    } else {
-                        propertiesFile.setFloatArray(fieldName, farray);
-                    }
+                case FLOATLIST:
+                    handler.setFloatArray();
                     break;
 
                 // Integer
                 case INTEGERWRAP:
                 case INTEGER:
-                    propertiesFile.setInt(fieldName, (Integer) value);
+                    handler.setInteger();
                     break;
 
                 case INTEGERWRAPARRAY:
-                    // Make Object Array into an Primitive Array
-                    value = ArrayUtils.toPrimitive((Integer[]) value);
                 case INTEGERARRAY:
-                    iarray = (int[]) value;
-                    // Uses a custom spacer if given
-                    if (hasSpacer) {
-                        propertiesFile.setIntArray(fieldName, ano.spacer(), iarray);
-                    } else {
-                        propertiesFile.setIntArray(fieldName, iarray);
-                    }
+                case INTEGERLIST:
+                    handler.setIntegerArray();
                     break;
 
                 // Long
                 case LONGWRAP:
                 case LONG:
-                    propertiesFile.setLong(fieldName, (Long) value);
+                    handler.setLong();
                     break;
 
                 case LONGWRAPARRAY:
-                    // Make Object Array into an Primitive Array
-                    value = ArrayUtils.toPrimitive((Long[]) value);
-                case LONGArray:
-                    larray = (long[]) value;
-                    // Uses a custom spacer if given
-                    if (hasSpacer) {
-                        propertiesFile.setLongArray(fieldName, ano.spacer(), larray);
-                    } else {
-                        propertiesFile.setLongArray(fieldName, larray);
-                    }
+                case LONGARRAY:
+                case LONGLIST:
+                    handler.setLongArray();
                     break;
 
                 // Short
                 case SHORTWRAP:
                 case SHORT:
-                    propertiesFile.setShort(fieldName, (Short) value);
+                    handler.setShort();
                     break;
 
                 case SHORTWRAPARRAY:
-                    // Make Object Array into an Primitive Array
-                    value = ArrayUtils.toPrimitive((Short[]) value);
                 case SHORTARRAY:
-                    sarray = (short[]) value;
-                    // Uses a custom spacer if given
-                    if (hasSpacer) {
-                        propertiesFile.setShortArray(fieldName, ano.spacer(), sarray);
-                    } else {
-                        propertiesFile.setShortArray(fieldName, sarray);
-                    }
+                case SHORTLIST:
+                    handler.setShortArray();
                     break;
 
                 // String
                 case STRING:
-                    propertiesFile.setString(fieldName, (String) value);
+                    handler.setString();
                     break;
 
                 case STRINGARRAY:
                     // Uses a custom spacer if given
-                    if (hasSpacer) {
-                        propertiesFile.setStringArray(fieldName, ano.spacer(), (String[]) value);
-                    } else {
-                        propertiesFile.setStringArray(fieldName, (String[]) value);
-                    }
+                    handler.setStringArray();
                     break;
 
                 default:
                     // Log not being able to save a field because it is not supported
-                    EELogger.getLogger("UtilConfigSetUp").warning("Unable to Processes Type: " + fieldType.toString() + " for " + config.getClass().getSimpleName());
+                    EELogger.getLogger("UtilConfigSetUp").warning("Unable to Processes Type: " + handler.getFieldName().toString() + " for " + config.getClass().getSimpleName());
                     break;
             }
         }
@@ -216,324 +150,149 @@ public class ConfigLogic {
     /**
      * Loads data from file to ConfigBase, and makes the file's default settings if needed
      */
-    public static void load(PropertiesFile propertiesFile, ConfigBase config, Field[] configFields) {
-        // Just got to make sure this stuff is not null
-        if (propertiesFile == null) throw new NullPointerException("PropertiesFile can not be null");
-        if (config == null) throw new NullPointerException("ConfigBase can not be null");
+    public void load(Field[] configFields) {
         // Lets not do anything if we have no Fields to take care of
-        if (ArrayUtils.isEmpty(configFields)) return;
+        if (ArrayUtils.isEmpty(ArrayUtils.nullToEmpty(configFields))) return;
 
         for (Field field : configFields) {
-            // Ensure we can use the field
-            field.setAccessible(true);
-            // Get type of field to be checked later
-            Type fieldType = field.getGenericType();
-            // Get the Annotation that we need
-            ConfigField ano = field.getAnnotation(ConfigField.class);
-            boolean hasSpacer = false;
-            // Checks if this field has a spacer set
-            if (!ano.spacer().equals("")) {
-                hasSpacer = true;
-            }
-            Object defaultValue = null;
-            boolean hasValue;
-            // Lets check if there is something to set
-            try {
-                defaultValue = field.get(config);
-            } catch (IllegalArgumentException e1) {
-            } catch (IllegalAccessException e1) {
-            } finally {
-                hasValue = defaultValue != null;
-            }
-            // It does not matter if we have a value to use or not since we are just loading
 
-            // Lets give this thing a name
-            String fieldName = (ano.name().equals("")) ? field.getName() : ano.name();
+            FieldHandler handler = null;
+            try {
+                handler = new FieldHandler(field, propertiesFile, config);
+            } catch (NoSuchFieldException e) {
+                // Should not happen but if it does lets
+                continue;
+            }
 
             Object result;
 
-            // if we have an array
-            byte[] barray;
-            double[] darray;
-            float[] farray;
-            int[] iarray;
-            long[] larray;
-            short[] sarray;
-
             // Time to get funky
-            switch (TypeValues.getFromType(fieldType)) {
+            switch (TypeValues.getFromType(handler.getFieldType())) {
 
                 // Boolean
                 case BOOLEANWRAP:
                 case BOOLEAN:
                     // Gets the current value or sets the default value
-                    if (hasValue) {
-                        result = propertiesFile.getBoolean(fieldName, (Boolean) defaultValue);
-                    } else {
-                        result = propertiesFile.getBoolean(fieldName);
-                    }
+                    result = handler.getBoolean();
                     break;
 
                 // Byte
                 case BYTEWRAP:
                 case BYTE:
                     // Gets the current value or sets the default value
-                    if (hasValue) {
-                        result = propertiesFile.getByte(fieldName, (Byte) defaultValue);
-                    } else {
-                        result = propertiesFile.getByte(fieldName);
-                    }
+                    result = handler.getByte();
                     break;
 
                 case BYTEWRAPARRAY:
-                    // Make Object Array into an Primitive Array
-                    defaultValue = ArrayUtils.toPrimitive((Byte[]) defaultValue);
                 case BYTEARRAY:
-                    barray = (byte[]) defaultValue;
+                case BYTELIST:
                     // Gets the current value or sets the default value
-                    if (hasValue) {
-                        // Uses a custom spacer if given
-                        if (hasSpacer) {
-                            result = propertiesFile.getByteArray(fieldName, ano.spacer(), barray);
-                        } else {
-                            result = propertiesFile.getByteArray(fieldName, barray);
-                        }
-                    } else {
-                        // Uses a custom spacer if given
-                        if (hasSpacer) {
-                            result = propertiesFile.getByteArray(fieldName, ano.spacer());
-                        } else {
-                            result = propertiesFile.getByteArray(fieldName);
-                        }
-                    }
+                    result = handler.getByteArray();
                     break;
 
                 // Character
                 case CHARACTERWRAP:
                 case CHARACTER:
                     // Gets the current value or sets the default value
-                    if (hasValue) {
-                        result = propertiesFile.getCharacter(fieldName, (Character) defaultValue);
-                    } else {
-                        result = propertiesFile.getCharacter(fieldName);
-                    }
+                    result = handler.getCharacter();
                     break;
 
                 // Double
                 case DOUBLEWRAP:
                 case DOUBLE:
                     // Gets the current value or sets the default value
-                    if (hasValue) {
-                        result = propertiesFile.getDouble(fieldName, (Double) defaultValue);
-                    } else {
-                        result = propertiesFile.getDouble(fieldName);
-                    }
+                    result = handler.getDouble();
                     break;
 
                 case DOUBLEWRAPARRAY:
-                    // Make Object Array into an Primitive Array
-                    defaultValue = ArrayUtils.toPrimitive((Double[]) defaultValue);
                 case DOUBLEARRAY:
-                    darray = (double[]) defaultValue;
+                case DOUBLELIST:
                     // Gets the current value or sets the default value
-                    if (hasValue) {
-                        // Uses a custom spacer if given
-                        if (hasSpacer) {
-                            result = propertiesFile.getDoubleArray(fieldName, ano.spacer(), darray);
-                        } else {
-                            result = propertiesFile.getDoubleArray(fieldName, darray);
-                        }
-                    } else {
-                        // Uses a custom spacer if given
-                        if (hasSpacer) {
-                            result = propertiesFile.getDoubleArray(fieldName, ano.spacer());
-                        } else {
-                            result = propertiesFile.getDoubleArray(fieldName);
-                        }
-                    }
+                    result = handler.getDoubleArray();
                     break;
 
                 // Float
                 case FLOATWRAP:
                 case FLOAT:
                     // Gets the current value or sets the default value
-                    if (hasValue) {
-                        result = propertiesFile.getFloat(fieldName, (Float) defaultValue);
-                    } else {
-                        result = propertiesFile.getFloat(fieldName);
-                    }
+                    result = handler.getFloat();
                     break;
 
                 case FLOATWRAPARRAY:
-                    // Make Object Array into an Primitive Array
-                    defaultValue = ArrayUtils.toPrimitive((Float[]) defaultValue);
                 case FLOATARRAY:
-                    farray = (float[]) defaultValue;
+                case FLOATLIST:
                     // Gets the current value or sets the default value
-                    if (hasValue) {
-                        // Uses a custom spacer if given
-                        if (hasSpacer) {
-                            result = propertiesFile.getFloatArray(fieldName, ano.spacer(), farray);
-                        } else {
-                            result = propertiesFile.getFloatArray(fieldName, farray);
-                        }
-                    } else {
-                        // Uses a custom spacer if given
-                        if (hasSpacer) {
-                            result = propertiesFile.getFloatArray(fieldName, ano.spacer());
-                        } else {
-                            result = propertiesFile.getFloatArray(fieldName);
-                        }
-                    }
+                    result = handler.getFloatArray();
                     break;
 
                 // Integer
                 case INTEGERWRAP:
                 case INTEGER:
                     // Gets the current value or sets the default value
-                    if (hasValue) {
-                        result = propertiesFile.getInt(fieldName, (Integer) defaultValue);
-                    } else {
-                        result = propertiesFile.getInt(fieldName);
-                    }
+                    result = handler.getInteger();
                     break;
 
                 case INTEGERWRAPARRAY:
-                    // Make Object Array into an Primitive Array
-                    defaultValue = ArrayUtils.toPrimitive((Integer[]) defaultValue);
                 case INTEGERARRAY:
-                    iarray = (int[]) defaultValue;
+                case INTEGERLIST:
                     // Gets the current value or sets the default value
-                    if (hasValue) {
-                        // Uses a custom spacer if given
-                        if (hasSpacer) {
-                            result = propertiesFile.getIntArray(fieldName, ano.spacer(), iarray);
-                        } else {
-                            result = propertiesFile.getIntArray(fieldName, iarray);
-                        }
-                    } else {
-                        // Uses a custom spacer if given
-                        if (hasSpacer) {
-                            result = propertiesFile.getIntArray(fieldName, ano.spacer());
-                        } else {
-                            result = propertiesFile.getIntArray(fieldName);
-                        }
-                    }
+                    result = handler.getIntegerArray();
                     break;
 
                 // Long
                 case LONGWRAP:
                 case LONG:
                     // Gets the current value or sets the default value
-                    if (hasValue) {
-                        result = propertiesFile.getLong(fieldName, (Long) defaultValue);
-                    } else {
-                        result = propertiesFile.getLong(fieldName);
-                    }
+                    result = handler.getLong();
                     break;
 
                 case LONGWRAPARRAY:
-                    // Make Object Array into an Primitive Array
-                    defaultValue = ArrayUtils.toPrimitive((Long[]) defaultValue);
-                case LONGArray:
-                    larray = (long[]) defaultValue;
+                case LONGARRAY:
+                case LONGLIST:
                     // Gets the current value or sets the default value
-                    if (hasValue) {
-                        // Uses a custom spacer if given
-                        if (hasSpacer) {
-                            result = propertiesFile.getLongArray(fieldName, ano.spacer(), larray);
-                        } else {
-                            result = propertiesFile.getLongArray(fieldName, larray);
-                        }
-                    } else {
-                        // Uses a custom spacer if given
-                        if (hasSpacer) {
-                            result = propertiesFile.getLongArray(fieldName, ano.spacer());
-                        } else {
-                            result = propertiesFile.getLongArray(fieldName);
-                        }
-                    }
+                    result = handler.getLongArray();
                     break;
 
                 // Short
                 case SHORTWRAP:
                 case SHORT:
+                case SHORTLIST:
                     // Gets the current value or sets the default value
-                    if (hasValue) {
-                        result = propertiesFile.getShort(fieldName, (Short) defaultValue);
-                    } else {
-                        result = propertiesFile.getShort(fieldName);
-                    }
+                    result = handler.getShort();
                     break;
 
                 case SHORTWRAPARRAY:
-                    // Make Object Array into an Primitive Array
-                    defaultValue = ArrayUtils.toPrimitive((Short[]) defaultValue);
                 case SHORTARRAY:
-                    sarray = (short[]) defaultValue;
                     // Gets the current value or sets the default value
-                    if (hasValue) {
-                        // Uses a custom spacer if given
-                        if (hasSpacer) {
-                            result = propertiesFile.getShortArray(fieldName, ano.spacer(), sarray);
-                        } else {
-                            result = propertiesFile.getShortArray(fieldName, sarray);
-                        }
-                    } else {
-                        // Uses a custom spacer if given
-                        if (hasSpacer) {
-                            result = propertiesFile.getShortArray(fieldName, ano.spacer());
-                        } else {
-                            result = propertiesFile.getShortArray(fieldName);
-                        }
-                    }
+                    result = handler.getShortArray();
                     break;
 
                 // String
                 case STRING:
                     // Gets the current value or sets the default value
-                    if (hasValue) {
-                        result = propertiesFile.getString(fieldName, (String) defaultValue);
-                    } else {
-                        result = propertiesFile.getString(fieldName);
-                    }
+                    result = handler.getString();
                     break;
 
                 case STRINGARRAY:
+                case STRINGLIST:
                     // Gets the current value or sets the default value
-                    if (hasValue) {
-                        // Uses a custom spacer if given
-                        if (hasSpacer) {
-                            result = propertiesFile.getStringArray(fieldName, ano.spacer(), (String[]) defaultValue);
-                        } else {
-                            result = propertiesFile.getStringArray(fieldName, (String[]) defaultValue);
-                        }
-                    } else {
-                        // Uses a custom spacer if given
-                        if (hasSpacer) {
-                            result = propertiesFile.getStringArray(fieldName, ano.spacer());
-                        } else {
-                            result = propertiesFile.getStringArray(fieldName);
-                        }
-                    }
+                    result = handler.getStringArray();
                     break;
 
                 default:
                     result = null;
                     // Log not being able to save a field because it is not supported
-                    EELogger.getLogger("UtilConfigSetUp").warning("Unable to Processes Type: " + fieldType.toString() + " for " + config.getClass().getSimpleName());
+                    EELogger.getLogger("UtilConfigSetUp").warning("Unable to Processes Type: " + handler.getFieldName().toString() + " for " + config.getClass().getSimpleName());
                     break;
             }
 
             // Now lets see if we have a value to set into the ConfigBase
             if (result != null) {
                 // Adds any amount of comments to the key in the file
-                if ((ano.comments().length != 1 || !ano.comments()[0].equals(""))) {
-                    propertiesFile.setComments(fieldName, ano.comments());
-                }
+                handler.setComments();
                 try {
                     // Now lets set that field to a value if we have one
-                    field.set(config, result);
+                    handler.setField();
                 } catch (IllegalArgumentException e) {
                     // Should never be the wrong type of Object being set
                 } catch (IllegalAccessException e) {

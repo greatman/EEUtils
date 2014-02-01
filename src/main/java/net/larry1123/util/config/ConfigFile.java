@@ -47,7 +47,7 @@ public class ConfigFile {
                 }
             }
         }
-        ConfigLogic.load(propertiesFile, config, configFields);
+        new ConfigLogic(propertiesFile, config).load(configFields);
     }
 
     /**
@@ -64,13 +64,13 @@ public class ConfigFile {
      */
     public void reload() {
         propertiesfile.reload();
-        ConfigLogic.load(propertiesfile, config, configFields);
+        new ConfigLogic(propertiesfile, config).load(configFields);
     }
 
     /**
      * Saves data to disk if any change has been made
      */
     public void save() {
-        ConfigLogic.save(propertiesfile, config, configFields);
+        new ConfigLogic(propertiesfile, config).save(configFields);
     }
 }

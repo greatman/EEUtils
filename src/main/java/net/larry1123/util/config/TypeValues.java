@@ -1,12 +1,14 @@
 package net.larry1123.util.config;
 
+import org.apache.commons.lang3.reflect.TypeUtils;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 /**
- * User: Larry1123
- * Date: 9/11/13
- * Time: 11:21 AM
+ * @author Larry1123
+ * @since 9/11/13 - 11:21 AM
  */
 public enum TypeValues {
 
@@ -15,32 +17,47 @@ public enum TypeValues {
     BYTE(Byte.TYPE), //
     BYTEWRAP(Byte.class), //
     BYTEARRAY(byte[].class), //
-    BYTEWRAPARRAY(Byte[].class), //
+    BYTEWRAPARRAY((new Byte[0]).getClass()), //
+    BYTELIST(getFieldType("byteList")), //
     CHARACTER(Character.TYPE), //
     CHARACTERWRAP(Character.class), //
     DOUBLE(Double.TYPE), //
     DOUBLEWRAP(Double.class), //
     DOUBLEARRAY(double[].class), //
-    DOUBLEWRAPARRAY(Double[].class), //
+    DOUBLEWRAPARRAY((new Double[0]).getClass()), //
+    DOUBLELIST(getFieldType("doubleList")), //
     FLOAT(Float.TYPE), //
     FLOATWRAP(Float.class), //
     FLOATARRAY(float[].class), //
-    FLOATWRAPARRAY(Float[].class), //
+    FLOATWRAPARRAY((new Float[0]).getClass()), //
+    FLOATLIST(getFieldType("floatList")), //
     INTEGER(Integer.TYPE), //
     INTEGERWRAP(Integer.class), //
     INTEGERARRAY(int[].class), //
-    INTEGERWRAPARRAY(Integer[].class), //
+    INTEGERWRAPARRAY((new Integer[0]).getClass()), //
+    INTEGERLIST(getFieldType("integerList")), //
     LONG(Long.TYPE), //
     LONGWRAP(Long.class), //
-    LONGArray(long[].class), //
-    LONGWRAPARRAY(Long[].class), //
+    LONGARRAY(long[].class), //
+    LONGWRAPARRAY((new Long[0]).getClass()), //
+    LONGLIST(getFieldType("longList")), //
     SHORT(Short.TYPE), //
     SHORTWRAP(Short.class), //
     SHORTARRAY(short[].class), //
-    SHORTWRAPARRAY(Short[].class), //
+    SHORTWRAPARRAY((new Short[0]).getClass()), //
+    SHORTLIST(getFieldType("shortList")), //
     STRING(String.class), //
-    STRINGARRAY(String[].class), //
+    STRINGARRAY((new String[0]).getClass()), //
+    STRINGLIST(getFieldType("stringList")), //
     OTHER(null);
+
+    private static ArrayList<Short> shortList = new ArrayList<Short>();
+    private static ArrayList<Long> longList = new ArrayList<Long>();
+    private static ArrayList<Float> floatList = new ArrayList<Float>();
+    private static ArrayList<Double> doubleList = new ArrayList<Double>();
+    private static ArrayList<Integer> integerList = new ArrayList<Integer>();
+    private static ArrayList<Byte> byteList = new ArrayList<Byte>();
+    private static ArrayList<String> stringList = new ArrayList<String>();
 
     private final Type thisType;
 
@@ -50,11 +67,12 @@ public enum TypeValues {
 
     public static TypeValues getFromType(Type type) {
         for (TypeValues t : TypeValues.values()) {
+            if (t == TypeValues.OTHER) continue;
             if (t.getTypeClass().equals(type)) {
                 return t;
             }
         }
-        return BOOLEAN;
+        return OTHER;
     }
 
     public Type getTypeClass() {
@@ -63,7 +81,7 @@ public enum TypeValues {
 
     private static Type getFieldType(String name) {
         try {
-            Field field = TypeValues.class.getField(name);
+            Field field = TypeValues.class.getDeclaredField(name);
             field.setAccessible(true);
             return field.getGenericType();
         } catch (SecurityException e) {
@@ -73,6 +91,50 @@ public enum TypeValues {
         }
 
         return null;
+    }
+
+    public boolean isList() {
+        switch (this) {
+            case BYTELIST:
+            case DOUBLELIST:
+            case FLOATLIST:
+            case INTEGERLIST:
+            case LONGLIST:
+            case SHORTLIST:
+            case STRINGLIST:
+                return true;
+        }
+        return false;
+    }
+
+    public boolean isPrimitiveArray() {
+        if (TypeUtils.isArrayType(thisType)) {
+            switch (this) {
+                case BYTEARRAY:
+                case DOUBLEARRAY:
+                case FLOATARRAY:
+                case INTEGERARRAY:
+                case LONGARRAY:
+                case SHORTARRAY:
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isWrappedArray() {
+        if (TypeUtils.isArrayType(thisType)) {
+            switch (this) {
+                case BYTEWRAPARRAY:
+                case DOUBLEWRAPARRAY:
+                case FLOATWRAPARRAY:
+                case INTEGERWRAPARRAY:
+                case LONGWRAPARRAY:
+                case SHORTWRAPARRAY:
+                    return true;
+            }
+        }
+        return false;
     }
 
 }
