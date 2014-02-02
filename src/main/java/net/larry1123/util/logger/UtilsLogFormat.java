@@ -16,6 +16,7 @@ final class UtilsLogFormat extends SimpleFormatter {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     @Override
     public final String format(LogRecord rec) {
 

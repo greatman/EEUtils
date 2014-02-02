@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * @author Larry1123
  * @since 1/31/14 - 9:02 AM
  */
+@SuppressWarnings({"MismatchedQueryAndUpdateOfCollection", "MismatchedReadAndWriteOfArray"})
 public class TestConfigFile implements ConfigBase {
 
     public TestConfigFile() {
@@ -132,7 +133,7 @@ public class TestConfigFile implements ConfigBase {
     @ConfigField
     public int[] publicIntegerArray = new int[]{195, 19878, 187110, -894, 8941};
     @ConfigField
-    public Integer[] PublicIntegerArray = new Integer[] {9811, -8100, 98743, 548, -9};
+    public Integer[] PublicIntegerArray = new Integer[]{9811, -8100, 98743, 548, -9};
     @ConfigField
     public ArrayList<Integer> publicIntegerList = new ArrayList<Integer>();
     @ConfigField
@@ -140,9 +141,9 @@ public class TestConfigFile implements ConfigBase {
     @ConfigField
     public Long PublicLong = 189588L;
     @ConfigField
-    public long[] publicLongArray = new long[] {818L, 4851L, 95195, -5481L, 9115L};
+    public long[] publicLongArray = new long[]{818L, 4851L, 95195, -5481L, 9115L};
     @ConfigField
-    public Long[] PublicLongArray = new Long[] {8511L, 8441L, 987465L, -8711L, -874L};
+    public Long[] PublicLongArray = new Long[]{8511L, 8441L, 987465L, -8711L, -874L};
     @ConfigField
     public ArrayList<Long> publicLongList = new ArrayList<Long>();
     @ConfigField
@@ -150,15 +151,15 @@ public class TestConfigFile implements ConfigBase {
     @ConfigField
     public Short PublicShort = 9145;
     @ConfigField
-    public short[] publicShortArray = new short[] {81, -47, 95, 648, 188};
+    public short[] publicShortArray = new short[]{81, -47, 95, 648, 188};
     @ConfigField
-    public Short[] PublicShortArray = new Short[] {184, 648, 187, 328, -874};
+    public Short[] PublicShortArray = new Short[]{184, 648, 187, 328, -874};
     @ConfigField
     public ArrayList<Short> publicShortList = new ArrayList<Short>();
     @ConfigField
     public String publicString = "Test String 1";
     @ConfigField
-    public String[] publicStringArray = new String[] {"Test String 2", "Test String 3", "Test String 4", "Test String 5"};
+    public String[] publicStringArray = new String[]{"Test String 2", "Test String 3", "Test String 4", "Test String 5"};
     @ConfigField
     public ArrayList<String> publicStringList = new ArrayList<String>();
 
@@ -173,9 +174,9 @@ public class TestConfigFile implements ConfigBase {
     @ConfigField
     private Byte PrivateByte = (byte) 984;
     @ConfigField
-    private byte[] privateByteArray = new byte[] {(byte) 981, (byte) 854, (byte) -586, (byte) 91};
+    private byte[] privateByteArray = new byte[]{(byte) 981, (byte) 854, (byte) -586, (byte) 91};
     @ConfigField
-    private Byte[] PrivateByteArray = new Byte[] {(byte) 549, (byte) 871, (byte) -987, (byte) 4156};
+    private Byte[] PrivateByteArray = new Byte[]{(byte) 549, (byte) 871, (byte) -987, (byte) 4156};
     @ConfigField
     private ArrayList<Byte> privateByteList = new ArrayList<Byte>();
     @ConfigField
@@ -187,9 +188,9 @@ public class TestConfigFile implements ConfigBase {
     @ConfigField
     private Double PrivateDouble = 9845.15;
     @ConfigField
-    private double[] privateDoubleArray = new double[] {-5618.2, 54951.91, -5496.054, 4584};
+    private double[] privateDoubleArray = new double[]{-5618.2, 54951.91, -5496.054, 4584};
     @ConfigField
-    private Double[] PrivateDoubleArray = new Double[] {-54185.18, 85491.5, 4185D, -198.2};
+    private Double[] PrivateDoubleArray = new Double[]{-54185.18, 85491.5, 4185D, -198.2};
     @ConfigField
     private ArrayList<Double> privateDoubleList = new ArrayList<Double>();
     @ConfigField
@@ -197,9 +198,9 @@ public class TestConfigFile implements ConfigBase {
     @ConfigField
     private Float PrivateFloat = -845.2F;
     @ConfigField
-    private float[] privateFloatArray = new float[] {-155F, 545.0F, 8542.2F, 6912.5F};
+    private float[] privateFloatArray = new float[]{-155F, 545.0F, 8542.2F, 6912.5F};
     @ConfigField
-    private Float[] PrivateFloatArray = new Float[] {-546.5F, 58455F, -515F, 54850.56F};
+    private Float[] PrivateFloatArray = new Float[]{-546.5F, 58455F, -515F, 54850.56F};
     @ConfigField
     private ArrayList<Float> privateFloatList = new ArrayList<Float>();
     @ConfigField
@@ -207,9 +208,9 @@ public class TestConfigFile implements ConfigBase {
     @ConfigField
     private Integer PrivateInteger = 5491;
     @ConfigField
-    private int[] privateIntegerArray = new int[] {84, 854, 910, 485, -515};
+    private int[] privateIntegerArray = new int[]{84, 854, 910, 485, -515};
     @ConfigField
-    private Integer[] PrivateIntegerArray = new Integer[] {941, -842, 548, -9155, 5481};
+    private Integer[] PrivateIntegerArray = new Integer[]{941, -842, 548, -9155, 5481};
     @ConfigField
     private ArrayList<Integer> privateIntegerList = new ArrayList<Integer>();
     @ConfigField
@@ -217,9 +218,9 @@ public class TestConfigFile implements ConfigBase {
     @ConfigField
     private Long PrivateLong = 880L;
     @ConfigField
-    private long[] privateLongArray = new long[] {981L, -91L, 584L, 66L};
+    private long[] privateLongArray = new long[]{981L, -91L, 584L, 66L};
     @ConfigField
-    private Long[] PrivateLongArray = new Long[] {9125L, 5110L, -912L, 645L};
+    private Long[] PrivateLongArray = new Long[]{9125L, 5110L, -912L, 645L};
     @ConfigField
     private ArrayList<Long> privateLongList = new ArrayList<Long>();
     @ConfigField
@@ -227,15 +228,15 @@ public class TestConfigFile implements ConfigBase {
     @ConfigField
     private Short PrivateShort = -915;
     @ConfigField
-    private short[] privateShortArray = new short[] {915, -851, 658, 28, -74};
+    private short[] privateShortArray = new short[]{915, -851, 658, 28, -74};
     @ConfigField
-    private Short[] PrivateShortArray = new Short[] {815, -850, 912, 315, -912};
+    private Short[] PrivateShortArray = new Short[]{815, -850, 912, 315, -912};
     @ConfigField
     private ArrayList<Short> privateShortList = new ArrayList<Short>();
     @ConfigField
     private String privateString = "Test String 11";
     @ConfigField
-    private String[] privateStringArray = new String[] {"Test String 12", "Test String 13", "Test String 14"};
+    private String[] privateStringArray = new String[]{"Test String 12", "Test String 13", "Test String 14"};
     @ConfigField
     private ArrayList<String> privateStringList = new ArrayList<String>();
 

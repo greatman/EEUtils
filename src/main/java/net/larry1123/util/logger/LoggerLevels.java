@@ -2,6 +2,7 @@ package net.larry1123.util.logger;
 
 import java.util.HashMap;
 
+@SuppressWarnings("WeakerAccess")
 public class LoggerLevels {
 
     private final static HashMap<String, LoggerLevel> LoggerLevels = new HashMap<String, LoggerLevel>();
@@ -70,6 +71,7 @@ public class LoggerLevels {
      * @param prefix    The Prefix to give Messages with said given LoggerLevel
      * @return The LoggerLevel that as been Gotten
      */
+    @SuppressWarnings("UnusedDeclaration")
     public static LoggerLevel getLoggerLevel(String levelName, String prefix) {
         String name = levelName + "-" + prefix;
         if (LoggerLevels.containsKey(name)) {

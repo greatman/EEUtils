@@ -17,6 +17,7 @@ import java.util.List;
  * @author Larry1123
  * @since 1/24/14 - 4:29 AM
  */
+@SuppressWarnings("WeakerAccess")
 public class FieldHandler {
 
     private final Field field;
@@ -30,14 +31,13 @@ public class FieldHandler {
     private Object retreatedValue = null;
 
     /**
-     * TODO
-     *
-     * @param field
-     * @param propertiesFile
-     * @param config
-     * @param fieldName
+     * @param field The Field to be handled
+     * @param propertiesFile The PropertiesFile that is to be used to save/load from
+     * @param config The object containing the field
+     * @param fieldName The name of the key to get from the PropertiesFile
      * @throws NoSuchFieldException is thrown if the config object does not contain the given Field
      */
+    @SuppressWarnings("UnusedDeclaration")
     public FieldHandler(Field field, PropertiesFile propertiesFile, Object config, String fieldName) throws NoSuchFieldException {
         try {
             config.getClass().getDeclaredField(field.getName());
@@ -60,17 +60,15 @@ public class FieldHandler {
         // Lets check if there is something to set
         try {
             setValue(field.get(config));
-        } catch (IllegalArgumentException e1) {
-        } catch (IllegalAccessException e1) {
+        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalAccessException ignored) {
         }
     }
 
     /**
-     * TODO
-     *
-     * @param field
-     * @param propertiesFile
-     * @param config
+     * @param field The Field to be handled
+     * @param propertiesFile The PropertiesFile that is to be used to save/load from
+     * @param config The object containing the field
      * @throws NoSuchFieldException is thrown if the config object does not contain the given Field
      */
     public FieldHandler(Field field, PropertiesFile propertiesFile, Object config) throws NoSuchFieldException {
@@ -111,6 +109,7 @@ public class FieldHandler {
      * @throws IllegalAccessException
      */
     // Cast are checked with the switches
+    @SuppressWarnings("UnusedReturnValue")
     public boolean setField() throws IllegalAccessException {
         // well it is null so nothing happens
         if (getRetreatedValue() == null) return false;
@@ -212,7 +211,8 @@ public class FieldHandler {
     public void setStringArray() {
         if (getValue() == null) throw new NullPointerException("Value can not be null when setting");
         if (TypeValues.getFromType(getFieldType()).isList())
-            setValue(((List<String>) getValue()).toArray(new String[0]));
+            //noinspection unchecked,unchecked
+            setValue(((List<String>) getValue()).toArray(new String[((List<String>) getValue()).size()]));
         if (!TypeUtils.isAssignable(getValue().getClass(), String[].class)) throw new IllegalArgumentException();
         if (ArrayUtils.isNotEmpty((String[]) getValue()))
             getPropertiesFile().setStringArray(getFieldName(), getSpacer(), (String[]) getValue());
@@ -221,6 +221,7 @@ public class FieldHandler {
     public void setShortArray() {
         if (getValue() == null) throw new NullPointerException("Value can not be null when setting");
         if (TypeValues.getFromType(getFieldType()).isList())
+            //noinspection unchecked
             setValue(Shorts.toArray((List<Short>) getValue()));
         if (TypeValues.getFromType(getFieldType()).isWrappedArray()) {
             if (TypeValues.getFromType(getFieldType()).equals(TypeValues.SHORTWRAPARRAY))
@@ -235,6 +236,7 @@ public class FieldHandler {
     public void setLongArray() {
         if (getValue() == null) throw new NullPointerException("Value can not be null when setting");
         if (TypeValues.getFromType(getFieldType()).isList())
+            //noinspection unchecked
             setValue(Longs.toArray((List<Long>) getValue()));
         if (TypeValues.getFromType(getFieldType()).isWrappedArray()) {
             if (TypeValues.getFromType(getFieldType()).equals(TypeValues.LONGWRAPARRAY))
@@ -249,6 +251,7 @@ public class FieldHandler {
     public void setIntegerArray() {
         if (getValue() == null) throw new NullPointerException("Value can not be null when setting");
         if (TypeValues.getFromType(getFieldType()).isList())
+            //noinspection unchecked
             setValue(Ints.toArray((List<Integer>) getValue()));
         if (TypeValues.getFromType(getFieldType()).isWrappedArray()) {
             if (TypeValues.getFromType(getFieldType()).equals(TypeValues.INTEGERWRAPARRAY))
@@ -263,6 +266,7 @@ public class FieldHandler {
     public void setFloatArray() {
         if (getValue() == null) throw new NullPointerException("Value can not be null when setting");
         if (TypeValues.getFromType(getFieldType()).isList())
+            //noinspection unchecked
             setValue(Floats.toArray((List<Float>) getValue()));
         if (TypeValues.getFromType(getFieldType()).isWrappedArray()) {
             if (TypeValues.getFromType(getFieldType()).equals(TypeValues.FLOATWRAPARRAY))
@@ -277,6 +281,7 @@ public class FieldHandler {
     public void setDoubleArray() {
         if (getValue() == null) throw new NullPointerException("Value can not be null when setting");
         if (TypeValues.getFromType(getFieldType()).isList())
+            //noinspection unchecked
             setValue(Doubles.toArray((List<Double>) getValue()));
         if (TypeValues.getFromType(getFieldType()).isWrappedArray()) {
             if (TypeValues.getFromType(getFieldType()).equals(TypeValues.DOUBLEWRAPARRAY))
@@ -291,6 +296,7 @@ public class FieldHandler {
     public void setByteArray() {
         if (getValue() == null) throw new NullPointerException("Value can not be null when setting");
         if (TypeValues.getFromType(getFieldType()).isList())
+            //noinspection unchecked
             setValue(Bytes.toArray((List<Byte>) getValue()));
         if (TypeValues.getFromType(getFieldType()).isWrappedArray()) {
             if (TypeValues.getFromType(getFieldType()).equals(TypeValues.BYTEWRAPARRAY))
@@ -371,6 +377,7 @@ public class FieldHandler {
 
     public String[] getStringArray() throws IllegalArgumentException, UtilityException {
         if (TypeValues.getFromType(getFieldType()).isList())
+            //noinspection unchecked
             setValue(Lists.newArrayList((ArrayList<String>) getValue()));
         // Gets the current value or sets the default value
         if (!TypeUtils.isAssignable(getValue().getClass(), String[].class)) throw new IllegalArgumentException();
@@ -384,6 +391,7 @@ public class FieldHandler {
 
     public short[] getShortArray() throws IllegalArgumentException, UtilityException {
         if (TypeValues.getFromType(getFieldType()).isList())
+            //noinspection unchecked
             setValue(Shorts.toArray((ArrayList<Short>) getValue()));
         if (TypeValues.getFromType(getFieldType()).isWrappedArray()) {
             if (TypeValues.getFromType(getFieldType()).equals(TypeValues.SHORTWRAPARRAY))
@@ -401,6 +409,7 @@ public class FieldHandler {
 
     public long[] getLongArray() throws IllegalArgumentException, UtilityException {
         if (TypeValues.getFromType(getFieldType()).isList())
+            //noinspection unchecked
             setValue(Longs.toArray((ArrayList<Long>) getValue()));
         if (TypeValues.getFromType(getFieldType()).isWrappedArray()) {
             if (TypeValues.getFromType(getFieldType()).equals(TypeValues.LONGWRAPARRAY))
@@ -418,6 +427,7 @@ public class FieldHandler {
 
     public int[] getIntegerArray() throws IllegalArgumentException, UtilityException {
         if (TypeValues.getFromType(getFieldType()).isList())
+            //noinspection unchecked
             setValue(Ints.toArray((ArrayList<Integer>) getValue()));
         if (TypeValues.getFromType(getFieldType()).isWrappedArray()) {
             if (TypeValues.getFromType(getFieldType()).equals(TypeValues.INTEGERWRAPARRAY))
@@ -435,6 +445,7 @@ public class FieldHandler {
 
     public float[] getFloatArray() throws IllegalArgumentException, UtilityException {
         if (TypeValues.getFromType(getFieldType()).isList())
+            //noinspection unchecked
             setValue(Floats.toArray((ArrayList<Float>) getValue()));
         if (TypeValues.getFromType(getFieldType()).isWrappedArray()) {
             if (TypeValues.getFromType(getFieldType()).equals(TypeValues.FLOATWRAPARRAY))
@@ -452,6 +463,7 @@ public class FieldHandler {
 
     public double[] getDoubleArray() throws IllegalArgumentException, UtilityException {
         if (TypeValues.getFromType(getFieldType()).isList())
+            //noinspection unchecked
             setValue(Doubles.toArray((ArrayList<Double>) getValue()));
         if (TypeValues.getFromType(getFieldType()).isWrappedArray()) {
             if (TypeValues.getFromType(getFieldType()).equals(TypeValues.DOUBLEWRAPARRAY))
@@ -469,6 +481,7 @@ public class FieldHandler {
 
     public byte[] getByteArray() throws IllegalArgumentException, UtilityException {
         if (TypeValues.getFromType(getFieldType()).isList())
+            //noinspection unchecked
             setValue(Bytes.toArray((ArrayList<Byte>) getValue()));
         if (TypeValues.getFromType(getFieldType()).isWrappedArray()) {
             if (TypeValues.getFromType(getFieldType()).equals(TypeValues.BYTEWRAPARRAY))
@@ -498,7 +511,7 @@ public class FieldHandler {
         if (getValue() != null) {
             /**
              * This Check should work with only checking for the wrapped type as to be saved to an Object it would have
-             * been autoboxed
+             * been threw autoboxing
              */
             if (!getValue().getClass().equals(Short.class)) throw new IllegalArgumentException();
             setRetreatedValue(getPropertiesFile().getShort(getFieldName(), (Short) getValue()));
@@ -622,19 +635,12 @@ public class FieldHandler {
         this.retreatedValue = retreatedValue;
     }
 
-    private <E> E[] primitiveArrayToWrapped(E... array) {
-        return array;
-    }
-
     private <E> List<E> arrayToList(E... array) {
         return Lists.newArrayList(array);
-    }
-
-    private <E> E[] listToArray(List<E> list) {
-        return (E[]) list.toArray();
     }
 
     public void setValue(Object value) {
         this.value = value;
     }
+
 }

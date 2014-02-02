@@ -14,9 +14,10 @@ import java.util.ArrayList;
  * @author Larry1123
  * @since 1/31/14 - 9:33 AM
  */
+@SuppressWarnings("WeakerAccess")
 public class PublicConfigSaveTest {
 
-    private String savePath = "target/tests/resources/save.cfg";
+    private final String savePath = "target/tests/resources/save.cfg";
 
     @Test
     public void publicBooleanSave() {
@@ -153,6 +154,7 @@ public class PublicConfigSaveTest {
             Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
         }
         try {
+            //noinspection unchecked
             byte[] testFieldValue = ArrayUtils.toPrimitive(
                     ((ArrayList<Byte>) testField.get(configFile)).toArray(ArrayUtils.EMPTY_BYTE_OBJECT_ARRAY));
             Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getByteArray(fieldName), testFieldValue));
@@ -296,8 +298,9 @@ public class PublicConfigSaveTest {
             Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
         }
         try {
+            //noinspection unchecked,unchecked
             double[] testFieldValue = ArrayUtils.toPrimitive(
-                    ((ArrayList<Double>) testField.get(configFile)).toArray(new Double[0]));
+                    ((ArrayList<Double>) testField.get(configFile)).toArray(new Double[((ArrayList<Double>) testField.get(configFile)).size()]));
             Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getDoubleArray(fieldName), testFieldValue));
         } catch (IllegalAccessException e) {
             Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
@@ -399,8 +402,9 @@ public class PublicConfigSaveTest {
             Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
         }
         try {
+            //noinspection unchecked,unchecked
             float[] testFieldValue = ArrayUtils.toPrimitive(
-                    ((ArrayList<Float>) testField.get(configFile)).toArray(new Float[0]));
+                    ((ArrayList<Float>) testField.get(configFile)).toArray(new Float[((ArrayList<Float>) testField.get(configFile)).size()]));
             Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getFloatArray(fieldName), testFieldValue));
         } catch (IllegalAccessException e) {
             Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
@@ -502,8 +506,9 @@ public class PublicConfigSaveTest {
             Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
         }
         try {
+            //noinspection unchecked,unchecked
             long[] testFieldValue = ArrayUtils.toPrimitive(
-                    ((ArrayList<Long>) testField.get(configFile)).toArray(new Long[0]));
+                    ((ArrayList<Long>) testField.get(configFile)).toArray(new Long[((ArrayList<Long>) testField.get(configFile)).size()]));
             Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getLongArray(fieldName), testFieldValue));
         } catch (IllegalAccessException e) {
             Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
@@ -605,8 +610,9 @@ public class PublicConfigSaveTest {
             Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
         }
         try {
+            //noinspection unchecked,unchecked
             int[] testFieldValue = ArrayUtils.toPrimitive(
-                    ((ArrayList<Integer>) testField.get(configFile)).toArray(new Integer[0]));
+                    ((ArrayList<Integer>) testField.get(configFile)).toArray(new Integer[((ArrayList<Integer>) testField.get(configFile)).size()]));
             Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getIntArray(fieldName), testFieldValue));
         } catch (IllegalAccessException e) {
             Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
@@ -708,8 +714,9 @@ public class PublicConfigSaveTest {
             Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
         }
         try {
+            //noinspection unchecked,unchecked
             short[] testFieldValue = ArrayUtils.toPrimitive(
-                    ((ArrayList<Short>) testField.get(configFile)).toArray(new Short[0]));
+                    ((ArrayList<Short>) testField.get(configFile)).toArray(new Short[((ArrayList<Short>) testField.get(configFile)).size()]));
             Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getShortArray(fieldName), testFieldValue));
         } catch (IllegalAccessException e) {
             Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");
@@ -770,7 +777,8 @@ public class PublicConfigSaveTest {
             Assert.fail("Seems that the field we just got from the object does not belong to that object!!!!!! Wat!");
         }
         try {
-            String[] testFieldValue = ((ArrayList<String>) testField.get(configFile)).toArray(new String[0]);
+            //noinspection unchecked,unchecked
+            String[] testFieldValue = ((ArrayList<String>) testField.get(configFile)).toArray(new String[((ArrayList<String>) testField.get(configFile)).size()]);
             Assert.assertTrue(ArrayUtils.isEquals(savePropertiesFile.getStringArray(fieldName), testFieldValue));
         } catch (IllegalAccessException e) {
             Assert.fail("Well seems that we could not read the field " + fieldName + " -.-");

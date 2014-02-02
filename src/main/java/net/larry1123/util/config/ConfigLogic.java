@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
  * The Logic for Loading and saving config files was moved to it's own class so if for some reason something using EEutils
  * can change the ConfigFile class.
  */
+@SuppressWarnings("WeakerAccess")
 public class ConfigLogic {
 
     private final PropertiesFile propertiesFile;
@@ -32,7 +33,7 @@ public class ConfigLogic {
 
         for (Field field : configFields) {
 
-            FieldHandler handler = null;
+            FieldHandler handler;
             try {
                 handler = new FieldHandler(field, propertiesFile, config);
             } catch (NoSuchFieldException e) {
@@ -139,7 +140,7 @@ public class ConfigLogic {
 
                 default:
                     // Log not being able to save a field because it is not supported
-                    EELogger.getLogger("UtilConfigSetUp").warning("Unable to Processes Type: " + handler.getFieldName().toString() + " for " + config.getClass().getSimpleName());
+                    EELogger.getLogger("UtilConfigSetUp").warning("Unable to Processes Type: " + handler.getFieldName() + " for " + config.getClass().getSimpleName());
                     break;
             }
         }
@@ -156,7 +157,7 @@ public class ConfigLogic {
 
         for (Field field : configFields) {
 
-            FieldHandler handler = null;
+            FieldHandler handler;
             try {
                 handler = new FieldHandler(field, propertiesFile, config);
             } catch (NoSuchFieldException e) {
@@ -282,7 +283,7 @@ public class ConfigLogic {
                 default:
                     result = null;
                     // Log not being able to save a field because it is not supported
-                    EELogger.getLogger("UtilConfigSetUp").warning("Unable to Processes Type: " + handler.getFieldName().toString() + " for " + config.getClass().getSimpleName());
+                    EELogger.getLogger("UtilConfigSetUp").warning("Unable to Processes Type: " + handler.getFieldName() + " for " + config.getClass().getSimpleName());
                     break;
             }
 

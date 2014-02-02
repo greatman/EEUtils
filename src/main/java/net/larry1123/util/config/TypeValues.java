@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * @author Larry1123
  * @since 9/11/13 - 11:21 AM
  */
+@SuppressWarnings("WeakerAccess")
 public enum TypeValues {
 
     BOOLEAN(Boolean.TYPE), //
@@ -51,12 +52,19 @@ public enum TypeValues {
     STRINGLIST(getFieldType("stringList")), //
     OTHER(null);
 
+    @SuppressWarnings("UnusedDeclaration")
     private static ArrayList<Short> shortList = new ArrayList<Short>();
+    @SuppressWarnings("UnusedDeclaration")
     private static ArrayList<Long> longList = new ArrayList<Long>();
+    @SuppressWarnings("UnusedDeclaration")
     private static ArrayList<Float> floatList = new ArrayList<Float>();
+    @SuppressWarnings("UnusedDeclaration")
     private static ArrayList<Double> doubleList = new ArrayList<Double>();
+    @SuppressWarnings("UnusedDeclaration")
     private static ArrayList<Integer> integerList = new ArrayList<Integer>();
+    @SuppressWarnings("UnusedDeclaration")
     private static ArrayList<Byte> byteList = new ArrayList<Byte>();
+    @SuppressWarnings("UnusedDeclaration")
     private static ArrayList<String> stringList = new ArrayList<String>();
 
     private final Type thisType;
@@ -107,6 +115,7 @@ public enum TypeValues {
         return false;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public boolean isPrimitiveArray() {
         if (TypeUtils.isArrayType(thisType)) {
             switch (this) {

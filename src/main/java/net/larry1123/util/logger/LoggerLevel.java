@@ -15,10 +15,6 @@ public class LoggerLevel extends Level {
 
     private final String prefix;
 
-    LoggerLevel(String name, String id) {
-        this(name, "", id);
-    }
-
     LoggerLevel(String name, String prefix, String id) {
         super(name, genLevel());
         this.prefix = prefix;
@@ -28,7 +24,7 @@ public class LoggerLevel extends Level {
     /**
      * Get the Prefix of the Level
      *
-     * @return
+     * @return String containing the prefix for the level
      */
     public String getPrefix() {
         return prefix;

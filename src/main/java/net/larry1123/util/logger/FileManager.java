@@ -13,6 +13,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 
+@SuppressWarnings("WeakerAccess")
 public class FileManager {
 
     private static final HashMap<String, FileHandler> fileHandlers = new HashMap<String, FileHandler>();
@@ -23,7 +24,7 @@ public class FileManager {
     /**
      * Returns the TimeDate that should be used for files at this time
      *
-     * @return
+     * @return String containing the current dateTime to use as the split in logging
      */
     public static String dateTime() {
         Date currentTime = null;
@@ -35,9 +36,9 @@ public class FileManager {
         }
 
         if (!(getConfig().getCurrentSplit() == null || getConfig().getCurrentSplit().equals(""))) {
-            Date currentsplit;
+            Date currentSplit;
             try {
-                currentsplit = DateUtils.parseDate(getConfig().getCurrentSplit(), DateFormatUtils.SMTP_DATETIME_FORMAT.getPattern());
+                currentSplit = DateUtils.parseDate(getConfig().getCurrentSplit(), DateFormatUtils.SMTP_DATETIME_FORMAT.getPattern());
             } catch (ParseException e) {
                 getConfig().setCurrentSplit(set);
                 return set.replace(":", "_");
@@ -50,24 +51,24 @@ public class FileManager {
                     test = DateUtils.setMinutes(test, 0);
                     test = DateUtils.setSeconds(test, 0);
                     test = DateUtils.setMilliseconds(test, 0);
-                    if (test.after(currentsplit)) {
+                    if (test.after(currentSplit)) {
                         set = getConfig().getCurrentSplit();
                     }
                     break;
                 case DAY:
-                    if (DateUtils.isSameDay(currentTime, currentsplit)) {
+                    if (DateUtils.isSameDay(currentTime, currentSplit)) {
                         set = getConfig().getCurrentSplit();
                     }
                     break;
                 case WEEK:
                     test = DateUtils.ceiling(currentTime, Calendar.WEEK_OF_MONTH);
-                    if (test.after(currentsplit)) {
+                    if (test.after(currentSplit)) {
                         set = getConfig().getCurrentSplit();
                     }
                     break;
                 case MONTH:
                     test = DateUtils.ceiling(currentTime, Calendar.MONTH);
-                    if (test.after(currentsplit)) {
+                    if (test.after(currentSplit)) {
                         set = getConfig().getCurrentSplit();
                     }
                     break;
@@ -83,13 +84,13 @@ public class FileManager {
      * Sets up the file for a Logger to use
      *
      * @param logger      What Logger needs setup
-     * @param logpathPath Where to Log to
-     * @return
+     * @param logPathPath Where to Log to
+     * @return Fully ready to use FileHandler
      */
-    public static FileHandler setUpFile(EELogger logger, String logpathPath) {
-        createDirectoryFromPath(logger.logpath);
+    public static FileHandler setUpFile(EELogger logger, String logPathPath) {
+        createDirectoryFromPath(logger.logPath);
         try {
-            FileHandler handler = getHandler(logger, logpathPath);
+            FileHandler handler = getHandler(logger, logPathPath);
             UtilFilter filter = fileFilters.get(handler);
             filter.setLogAll(true);
             return handler;
@@ -107,7 +108,7 @@ public class FileManager {
      * @param logger    What Logger owns the LoggerLevel
      * @param lvl       What Level needs setup
      * @param levelPath Where To Log to
-     * @return
+     * @return Fully ready to use FileHandler
      */
     public static FileHandler setUpFile(EELogger logger, LoggerLevel lvl, String levelPath) {
         createDirectoryFromPath(logger.path);
@@ -121,15 +122,14 @@ public class FileManager {
     }
 
     /**
-     * TODO
-     *
-     * @param logger
-     * @param lvl
-     * @param pathName
-     * @return
+     * @param logger The logger that the file is made for
+     * @param lvl The Level the file is made for
+     * @param pathName The Path that the file is to be saved to
+     * @return A setup but not fully ready FileHandler
      * @throws SecurityException
      * @throws IOException
      */
+    @SuppressWarnings("UnusedDeclaration")
     public static FileHandler getHandler(EELogger logger, LoggerLevel lvl, String pathName) throws SecurityException, IOException {
 
         FileHandler handler = null;
@@ -166,11 +166,9 @@ public class FileManager {
     }
 
     /**
-     * TODO
-     *
-     * @param logger
-     * @param pathName
-     * @return
+     * @param logger The logger that the file is made for
+     * @param pathName The Path that the file is to be saved to
+     * @return A setup but not fully ready FileHandler
      * @throws SecurityException
      * @throws IOException
      */
@@ -209,7 +207,7 @@ public class FileManager {
     /**
      * Removes A Level from the file filter that it is linked to
      *
-     * @param lvl
+     * @param lvl Remove a fileHandler for the given level
      */
     public static void removeLoggerLevel(LoggerLevel lvl) {
         fileFilters.get(fileHandlers.get(levelPaths.remove(lvl))).removeLogLevel(lvl);
@@ -217,9 +215,9 @@ public class FileManager {
 
     public static void updateFileHandlers() {
         for (EELogger logger : loggerPaths.keySet()) {
-            for (Handler handlerm : logger.getHandlers()) {
-                if (handlerm instanceof FileHandler) {
-                    FileHandler handler = (FileHandler) handlerm;
+            for (Handler handlerM : logger.getHandlers()) {
+                if (handlerM instanceof FileHandler) {
+                    FileHandler handler = (FileHandler) handlerM;
                     UtilFilter filter = (UtilFilter) handler.getFilter();
                     if (!handler.getLevel().equals(Level.ALL)) {
                         LoggerLevel lvl = (LoggerLevel) handler.getLevel();
@@ -230,7 +228,7 @@ public class FileManager {
                     } else {
                         fileHandlers.remove(loggerPaths.get(logger));
                         logger.removeHandler(handler);
-                        handler = setUpFile(logger, logger.logpath);
+                        handler = setUpFile(logger, logger.logPath);
                         handler.setFilter(filter);
                     }
                 }
@@ -241,6 +239,7 @@ public class FileManager {
     private static void createDirectoryFromPath(String path) {
         File logDir = new File(path.substring(0, path.lastIndexOf('/')));
         if (!logDir.exists()) {
+            //noinspection ResultOfMethodCallIgnored
             logDir.mkdirs();
         }
     }

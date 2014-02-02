@@ -30,7 +30,7 @@ public class LoggerTest {
     public void testFileCreation() {
         EELogManager.setLoggerSettings(new TestLoggerSettings());
         EELogger makeAFile = EELogManager.getLogger("EEUtilFileTest");
-        File logFile = new File(makeAFile.logpath + "." + EELogManager.getLoggerSettings().getFileType());
+        File logFile = new File(makeAFile.logPath + "." + EELogManager.getLoggerSettings().getFileType());
         Assert.assertTrue("Logger File failed to be made.", logFile.exists());
     }
 
@@ -39,7 +39,7 @@ public class LoggerTest {
         EELogManager.setLoggerSettings(new TestLoggerSettings());
         EELogger makeAFile = EELogManager.getLogger("EEUtilFileTest");
         makeAFile.addLoggerLevelWFile("LevelTest");
-        File logFile = new File(makeAFile.logpath + "-LevelTest." + EELogManager.getLoggerSettings().getFileType());
+        File logFile = new File(makeAFile.logPath + "-LevelTest." + EELogManager.getLoggerSettings().getFileType());
         Assert.assertTrue("Level File failed to be made.", logFile.exists());
     }
 

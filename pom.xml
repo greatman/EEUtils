@@ -8,7 +8,7 @@
     <inceptionYear>2013</inceptionYear>
 
     <properties>
-        <build.number></build.number>
+        <build.number/>
     </properties>
 
     <organization>

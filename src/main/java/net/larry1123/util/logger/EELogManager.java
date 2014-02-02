@@ -15,11 +15,21 @@ public class EELogManager {
 
     private static LoggerSettings loggerSettings = new LogSettings();
 
+    /**
+     * Set the LoggerSettings to use for logging.
+     *
+     * @param loggerSettings The LoggerSettings to set
+     */
     public static void setLoggerSettings(LoggerSettings loggerSettings) {
         if (loggerSettings == null) throw new NullPointerException("LoggerSettings can not be null");
         EELogManager.loggerSettings = loggerSettings;
     }
 
+    /**
+     * Gets the currently used LoggerSettings.
+     *
+     * @return The current LoggerSettings
+     */
     public static LoggerSettings getLoggerSettings() {
         if (loggerSettings == null) throw new NullPointerException("LoggerSettings is null");
         return loggerSettings;
@@ -29,12 +39,12 @@ public class EELogManager {
      * Gets the EELogger for the given name
      *
      * @param name Name of the Logger
-     * @return
+     * @return the EELogger for the given
      */
     public static EELogger getLogger(String name) {
         if (!loggers.containsKey(name)) {
-            EELogger logman = new EELogger(name);
-            loggers.put(logman.getName(), logman);
+            EELogger logMan = new EELogger(name);
+            loggers.put(logMan.getName(), logMan);
         }
         return loggers.get(name);
     }
@@ -42,9 +52,9 @@ public class EELogManager {
     /**
      * Gets the EELogger for the given name as a sub of the given parent
      *
-     * @param name
-     * @param parent
-     * @return
+     * @param name   Name of the sub-Logger
+     * @param parent What EELogger to create a sub-Logger under
+     * @return The EELogger for the requested sub-Logger
      */
     public static EELogger getSubLogger(String name, EELogger parent) {
         if (!loggers.containsKey(parent.getName() + ":" + name)) {

@@ -7,8 +7,6 @@ import java.io.File;
 import java.util.logging.Logger;
 
 /**
- * Created with IntelliJ IDEA.
- *
  * @author Larry1123
  * @since 1/30/14 - 7:43 AM
  */

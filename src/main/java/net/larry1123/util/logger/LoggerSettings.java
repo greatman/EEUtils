@@ -17,20 +17,22 @@ public interface LoggerSettings {
      *
      * @param path Local Path to place Log files
      */
+    @SuppressWarnings("UnusedDeclaration")
     public void setLoggerPath(String path);
 
     /**
-     * Returns if the Server is allowed to send info to https://paste.larry1123.net/
+     * Returns if the Logger is allowed to send info to https://paste.larry1123.net/
      *
      * @return true is allowed false not allowed
      */
     public boolean isPastingAllowed();
 
     /**
-     * TODO
+     * Sets if the Logger is allowed to send info to https://paste.larry1123.net/
      *
-     * @param state
+     * @param state True if allowed, false if not
      */
+    @SuppressWarnings("UnusedDeclaration")
     public void setPastingAllowed(boolean state);
 
     /**
@@ -43,6 +45,7 @@ public interface LoggerSettings {
     /**
      * Set the Setting for how to split log files.
      */
+    @SuppressWarnings("UnusedDeclaration")
     public void setFileSplit(FileSplits fileSplit);
 
     /**
@@ -56,7 +59,7 @@ public interface LoggerSettings {
     /**
      * To be used by Logger Only Do not Change
      *
-     * @param current
+     * @param current Set the current Split files are logging with
      */
     public void setCurrentSplit(String current);
 
@@ -68,24 +71,27 @@ public interface LoggerSettings {
     public String getFileType();
 
     /**
-     * TODO
+     * Set the type of time to log to
+     * ie. "log" for a .log0
      *
-     * @param type
+     * @param type String to use as the file extension
      */
+    @SuppressWarnings("UnusedDeclaration")
     public void setFileType(String type);
 
     /**
-     * TODO
+     * Get the Parent to set to for all Loggers
      *
-     * @return
+     * @return Logger to use to set as Parent
      */
     public Logger getParentLogger();
 
     /**
-     * TODO
+     * Set the Parent to set for all Loggers
      *
-     * @param logger
+     * @param logger The Logger to be used
      */
+    @SuppressWarnings("UnusedDeclaration")
     public void setParentLogger(Logger logger);
 
 }
