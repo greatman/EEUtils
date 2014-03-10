@@ -133,19 +133,8 @@
 
     <repositories>
         <repository>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </snapshots>
-            <id>Repo1123</id>
-            <name>Larry1123's Repo</name>
-            <url>http://ci.larry1123.net/plugin/repository/everything</url>
+                 <id>canary</id>
+                 <url>http://repo2.visualillusionsent.net/repository/public/</url>
         </repository>
     </repositories>
 
